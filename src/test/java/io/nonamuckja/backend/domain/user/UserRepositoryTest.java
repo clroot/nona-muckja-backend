@@ -22,17 +22,15 @@ class UserRepositoryTest {
         //given
         String testEmail = "test@email.com";
         String testName = "test";
+        String testPassword = "test-password";
 
-        userRepository.save(User.builder()
-                .email(testEmail)
-                .name(testName)
-                .build());
+        userRepository.save(User.builder().email(testEmail).username(testName).password(testPassword).build());
 
         //when
         User user = userRepository.findByEmail(testEmail);
 
         //then
         assertEquals(testEmail, user.getEmail());
-        assertEquals(testName, user.getName());
+        assertEquals(testName, user.getUsername());
     }
 }
