@@ -1,5 +1,6 @@
 package io.nonamuckja.backend.domain.party;
 
+import io.nonamuckja.backend.domain.Address;
 import io.nonamuckja.backend.domain.BaseTimeEntity;
 import io.nonamuckja.backend.domain.user.User;
 import lombok.Getter;
@@ -22,6 +23,9 @@ public class Party extends BaseTimeEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "host_user_id")
     private User host;
+
+    @Embedded
+    private Address address;
 
     @OneToMany(mappedBy = "party", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<PartyUser> members = new ArrayList<>();

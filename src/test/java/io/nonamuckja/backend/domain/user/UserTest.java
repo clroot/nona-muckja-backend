@@ -16,13 +16,10 @@ class UserTest {
         String testName = "test";
 
         //when
-        User user = User.builder()
-                .email(testEmail)
-                .name(testName)
-                .build();
+        User user = User.builder().email(testEmail).username(testName).build();
 
         //then
         assertEquals(testEmail, user.getEmail());
-        assertEquals(testName, user.getName());
+        assertEquals(testName, user.getUsername());
     }
 }
