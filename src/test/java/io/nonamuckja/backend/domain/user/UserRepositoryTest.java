@@ -27,7 +27,7 @@ class UserRepositoryTest {
         userRepository.save(User.builder().email(testEmail).username(testName).password(testPassword).build());
 
         //when
-        User user = userRepository.findByEmail(testEmail);
+        User user = userRepository.findByEmail(testEmail).orElseThrow();
 
         //then
         assertEquals(testEmail, user.getEmail());
