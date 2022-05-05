@@ -1,0 +1,22 @@
+spring:
+  config:
+    import: classpath:application-datasource.yml
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: true
+    database-platform: org.hibernate.dialect.MariaDBDialect
+  thymeleaf:
+    cache: false
+  h2:
+    console:
+      enabled: false
+logging:
+  level:
+    org:
+      springframework:
+        security:
+          web: trace
