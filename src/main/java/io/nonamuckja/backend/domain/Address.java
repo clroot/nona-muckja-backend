@@ -1,18 +1,24 @@
 package io.nonamuckja.backend.domain;
 
-import lombok.Getter;
+import lombok.*;
 
 import javax.persistence.Embeddable;
 
 @Embeddable
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
+@AllArgsConstructor
 @Getter
+@ToString(of = {"roadAddress", "zipCode", "x", "y"})
 public class Address {
 
-    private String street;
+    private String address; // 지번주소
 
-    private String city;
+    private String roadAddress; // 도로명주소
 
-    private String state;
+    private String zipCode; // 우편번호
 
-    private String zip;
+    private Double x; // longitude
+
+    private Double y; // latitude
 }
