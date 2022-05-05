@@ -3,11 +3,10 @@ package io.nonamuckja.backend.domain.user;
 import io.nonamuckja.backend.domain.Address;
 import io.nonamuckja.backend.domain.BaseTimeEntity;
 import lombok.*;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(indexes = {@Index(name = "idx_user_email", columnList = "email", unique = true)})
@@ -15,7 +14,7 @@ import java.util.Collection;
 @Builder
 @AllArgsConstructor
 @Getter
-public class User extends BaseTimeEntity implements UserDetails {
+public class User extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,28 +33,11 @@ public class User extends BaseTimeEntity implements UserDetails {
     @Embedded
     private Address address;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
-    }
+    @ElementCollection(fetch = FetchType.LAZY)
+    @Builder.Default
+    private Set<UserRole> roles = new HashSet<>();
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return false;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return false;
+    public void addRole(UserRole role) {
+        roles.add(role);
     }
 }
