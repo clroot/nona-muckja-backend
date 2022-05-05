@@ -1,0 +1,16 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: true
+  thymeleaf:
+    cache: false
+logging:
+  level:
+    org:
+      springframework:
+        security:
+          web: trace
