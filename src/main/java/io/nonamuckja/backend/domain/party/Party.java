@@ -3,8 +3,7 @@ package io.nonamuckja.backend.domain.party;
 import io.nonamuckja.backend.domain.Address;
 import io.nonamuckja.backend.domain.BaseTimeEntity;
 import io.nonamuckja.backend.domain.user.User;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -12,7 +11,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "party")
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
+@AllArgsConstructor
 @Getter
 public class Party extends BaseTimeEntity {
 
@@ -20,7 +21,7 @@ public class Party extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "host_user_id")
     private User host;
 
@@ -28,5 +29,6 @@ public class Party extends BaseTimeEntity {
     private Address address;
 
     @OneToMany(mappedBy = "party", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Builder.Default
     private List<PartyUser> members = new ArrayList<>();
 }
