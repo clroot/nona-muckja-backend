@@ -2,7 +2,7 @@ package io.nonamuckja.backend.service;
 
 import io.nonamuckja.backend.domain.user.User;
 import io.nonamuckja.backend.domain.user.UserRepository;
-import io.nonamuckja.backend.dto.UserAuthDTO;
+import io.nonamuckja.backend.dto.UserDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,9 +26,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         User user =
                 userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username));
 
-        log.info("-------------------------------");
         log.info("loadUserByUsername: {}", user);
+        log.info("-------------------------------");
 
-        return UserAuthDTO.entityToDTO(user);
+        return UserDTO.entityToDTO(user);
     }
 }
