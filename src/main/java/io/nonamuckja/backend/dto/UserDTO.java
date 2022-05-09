@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 @Getter
 @Setter
-public class UserAuthDTO extends org.springframework.security.core.userdetails.User {
+public class UserDTO extends org.springframework.security.core.userdetails.User {
 
     private Long id;
 
@@ -20,23 +20,23 @@ public class UserAuthDTO extends org.springframework.security.core.userdetails.U
 
     private Address address;
 
-    public UserAuthDTO(String username, String password,
-                       Collection<? extends GrantedAuthority> authorities) {
+    private UserDTO(String username, String password,
+                    Collection<? extends GrantedAuthority> authorities) {
         super(username, password, authorities);
     }
 
-    public static UserAuthDTO entityToDTO(User user) {
+    public static UserDTO entityToDTO(User user) {
         String username = user.getUsername();
         String password = user.getPassword();
         Collection<? extends GrantedAuthority> authorities =
                 user.getRoles().stream().map(role -> new SimpleGrantedAuthority("ROLE_" + role.name())).collect(Collectors.toList());
 
-        UserAuthDTO userAuthDTO = new UserAuthDTO(username, password, authorities);
+        UserDTO userDTO = new UserDTO(username, password, authorities);
 
-        userAuthDTO.id = user.getId();
-        userAuthDTO.email = user.getEmail();
-        userAuthDTO.address = user.getAddress();
+        userDTO.id = user.getId();
+        userDTO.email = user.getEmail();
+        userDTO.address = user.getAddress();
 
-        return userAuthDTO;
+        return userDTO;
     }
 }
