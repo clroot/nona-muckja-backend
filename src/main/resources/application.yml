@@ -14,6 +14,11 @@ spring:
   h2:
     console:
       enabled: false
+  security:
+    oauth2:
+      client:
+        clientId:570212311623-ggtmucguh3nr3c89v4i38j4rjk11n061.apps.googleusercontent.com
+          clientSecret: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
 logging:
   level:
     org:
