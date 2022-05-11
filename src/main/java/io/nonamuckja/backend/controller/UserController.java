@@ -1,9 +1,11 @@
 package io.nonamuckja.backend.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import io.nonamuckja.backend.domain.user.User;
 import io.nonamuckja.backend.domain.user.UserRepository;
@@ -13,7 +15,8 @@ import io.nonamuckja.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@Controller
+@RestController
+@RequestMapping("/api/user")
 @RequiredArgsConstructor
 @Slf4j
 public class UserController {
@@ -30,6 +33,6 @@ public class UserController {
 		User user = userRepository.findById(registeredId).orElseThrow();
 		log.info("User registration successful: {}", user);
 
-		return ResponseEntity.ok(UserDTO.entityToDTO(user));
+		return new ResponseEntity<>(UserDTO.entityToDTO(user), HttpStatus.CREATED);
 	}
 }
