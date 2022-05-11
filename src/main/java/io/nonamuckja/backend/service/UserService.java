@@ -2,6 +2,7 @@ package io.nonamuckja.backend.service;
 
 import java.util.Optional;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,6 +12,7 @@ import io.nonamuckja.backend.domain.user.UserRepository;
 import io.nonamuckja.backend.domain.user.UserRole;
 import io.nonamuckja.backend.dto.AddressDTO;
 import io.nonamuckja.backend.dto.UserRegisterFormDTO;
+import io.nonamuckja.backend.exception.UserDuplicateException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -48,7 +50,7 @@ public class UserService {
 	private void validateDuplicateUser(UserRegisterFormDTO userRegisterFormDTO) {
 		Optional<User> result = userRepository.findByUsername(userRegisterFormDTO.getUsername());
 		if (result.isPresent()) {
-			throw new IllegalStateException("이미 존재하는 사용자입니다.");
+			throw new UserDuplicateException("이미 존재하는 사용자입니다.", HttpStatus.CONFLICT);
 		}
 	}
 }
