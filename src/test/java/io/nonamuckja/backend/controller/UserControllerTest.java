@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.bloco.faker.Faker;
 import io.nonamuckja.backend.domain.user.UserRepository;
+import io.nonamuckja.backend.dto.AddressDTO;
 import io.nonamuckja.backend.dto.UserRegisterFormDTO;
 
 @ExtendWith(SpringExtension.class)
@@ -55,11 +56,24 @@ class UserControllerTest {
 		String username = faker.internet.userName();
 		String password = faker.internet.password();
 		String email = faker.internet.email();
+		AddressDTO address = createAddressDTO();
 
 		return UserRegisterFormDTO.builder()
 			.username(username)
 			.password(password)
 			.email(email)
+			.address(address)
+			.build();
+	}
+
+	private AddressDTO createAddressDTO() {
+		Faker faker = new Faker();
+		return AddressDTO.builder()
+			.address(faker.address.city() + " " + faker.address.secondaryAddress())
+			.roadAddress(faker.address.streetAddress())
+			.zipCode(faker.address.postcode())
+			.x(Double.parseDouble(faker.number.decimal(2, 14)))
+			.y(Double.parseDouble(faker.number.decimal(3, 14)))
 			.build();
 	}
 }

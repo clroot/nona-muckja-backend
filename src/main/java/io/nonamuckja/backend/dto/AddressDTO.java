@@ -12,13 +12,14 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class UserRegisterFormDTO {
+public class AddressDTO {
+	private String address; // 지번주소
 
-	private String username;
+	private String roadAddress; // 도로명주소
 
-	private String password;
+	private String zipCode; // 우편번호
 
-	private String email;
+	private Double x; // longitude
 
-	private AddressDTO address;
+	private Double y; // latitude
 }
