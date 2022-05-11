@@ -4,14 +4,13 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.nonamuckja.backend.domain.user.UserRepository;
+import io.nonamuckja.backend.dto.UserDTO;
+import io.nonamuckja.backend.security.AuthUserDTO;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
 public class BaseController {
-
-	private final UserRepository userRepository;
 
 	@GetMapping("/")
 	public String index() {
@@ -20,7 +19,7 @@ public class BaseController {
 
 	@PreAuthorize("hasRole('USER')")
 	@GetMapping("/auth")
-	public String auth() {
-		return "auth";
+	public String auth(@AuthUserDTO UserDTO userDTO) {
+		return userDTO.getUsername();
 	}
 }

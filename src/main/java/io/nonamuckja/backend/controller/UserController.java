@@ -33,6 +33,6 @@ public class UserController {
 		User user = userRepository.findById(registeredId).orElseThrow();
 		log.info("User registration successful: {}", user);
 
-		return new ResponseEntity<>(UserDTO.entityToDTO(user), HttpStatus.CREATED);
+		return new ResponseEntity<>(UserDTO.fromEntity(user), HttpStatus.CREATED);
 	}
 }

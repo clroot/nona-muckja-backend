@@ -24,6 +24,18 @@ public class AddressDTO {
 
 	private Double y; // latitude
 
+	public static AddressDTO fromEntity(Address address) {
+		AddressDTO dto = new AddressDTO();
+
+		dto.address = address.getAddress();
+		dto.roadAddress = address.getRoadAddress();
+		dto.zipCode = address.getZipCode();
+		dto.x = address.getX();
+		dto.y = address.getY();
+
+		return dto;
+	}
+
 	public Address toEntity() {
 		return Address.builder()
 			.address(address)
