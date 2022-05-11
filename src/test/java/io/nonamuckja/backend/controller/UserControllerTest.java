@@ -37,12 +37,14 @@ class UserControllerTest {
 		//given
 		long beforeCount = userRepository.count();
 		UserRegisterFormDTO userRegisterFormDTO = createUserRegisterFormDTO();
+		String url = "/api/user/register";
 
 		//when
-		mockMvc.perform(post("/register")
+		mockMvc.perform(post(url)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(new ObjectMapper().writeValueAsString(userRegisterFormDTO)))
-			.andExpect(status().isOk());
+			.andExpect(status().isCreated())
+			.andExpect(jsonPath("id").exists());
 
 		//then
 		assertEquals(beforeCount + 1, userRepository.count());
