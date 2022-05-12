@@ -1,4 +1,4 @@
-package io.nonamuckja.backend.security;
+package io.nonamuckja.backend.security.jwt;
 
 import java.io.Serializable;
 import java.security.Key;
@@ -22,6 +22,7 @@ public class JwtTokenUtilsImpl implements JwtTokenUtils, Serializable {
 
 	Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
+	@Override
 	public String generateToken(UserDetails userDetails) {
 		Map<String, Object> claims = new HashMap<>();
 		return Jwts.builder()
@@ -33,15 +34,18 @@ public class JwtTokenUtilsImpl implements JwtTokenUtils, Serializable {
 			.compact();
 	}
 
+	@Override
 	public Boolean validateToken(String token, UserDetails userDetails) {
 		final String username = getUsernameFromToken(token);
 		return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
 	}
 
+	@Override
 	public String getUsernameFromToken(String token) {
 		return getClaimFromToken(token, Claims::getSubject);
 	}
 
+	@Override
 	public Date getExpirationDateFromToken(String token) {
 		return getClaimFromToken(token, Claims::getExpiration);
 	}

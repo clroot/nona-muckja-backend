@@ -1,4 +1,4 @@
-package io.nonamuckja.backend.security;
+package io.nonamuckja.backend.security.jwt;
 
 import java.io.IOException;
 
