@@ -2,6 +2,9 @@ package io.nonamuckja.backend.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,6 +26,8 @@ import io.nonamuckja.backend.security.UserDetailsAdapter;
 @Transactional
 class AuthServiceTest {
 
+	@PersistenceContext
+	EntityManager em;
 	@Autowired
 	private AuthService authService;
 
@@ -53,6 +58,9 @@ class AuthServiceTest {
 			.username(username)
 			.password(password)
 			.build();
+
+		em.flush();
+		em.clear();
 
 		//when
 		String token = authService.login(loginFormDTO);

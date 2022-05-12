@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-public class BaseController {
+public class IndexController {
 
 	@GetMapping("/")
 	public void index(HttpServletResponse response) throws IOException {
