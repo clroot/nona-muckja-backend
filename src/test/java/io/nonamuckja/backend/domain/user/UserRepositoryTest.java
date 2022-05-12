@@ -1,77 +1,97 @@
 package io.nonamuckja.backend.domain.user;
 
-import io.bloco.faker.Faker;
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import io.nonamuckja.backend.TestUtils;
+import io.nonamuckja.backend.dto.UserRegisterFormDTO;
 
 @SpringBootTest
 @Transactional
 @SuppressWarnings("NonAsciiCharacters")
 class UserRepositoryTest {
 
-    @Autowired
-    private UserRepository userRepository;
+	@Autowired
+	private UserRepository userRepository;
 
-    @Test
-    @DisplayName("유저_저장_테스트")
-    public void 유저_저장_테스트() {
-        //given
-        Faker faker = new Faker();
-        String testEmail = faker.internet.email();
-        String testUsername = faker.internet.userName();
-        String testPassword = faker.internet.password();
+	@Autowired
+	private TestUtils testUtils;
 
-        userRepository.save(User.builder().email(testEmail).username(testUsername).password(testPassword).build());
+	@Test
+	@DisplayName("유저_저장_테스트")
+	public void 유저_저장_테스트() {
+		//given
+		UserRegisterFormDTO registerFormDTO = testUtils.createUserRegisterFormDTO();
 
-        //when
-        User user = userRepository.findByEmail(testEmail).orElseThrow();
+		String username = registerFormDTO.getUsername();
+		String email = registerFormDTO.getEmail();
+		String password = registerFormDTO.getPassword();
 
-        //then
-        assertEquals(testEmail, user.getEmail());
-        assertEquals(testUsername, user.getUsername());
-    }
+		userRepository.save(User.builder()
+			.email(email)
+			.username(username)
+			.password(password)
+			.build());
 
-    @Test
-    @DisplayName("findByEmail 테스트")
-    public void findByEmail() {
-        //given
-        Faker faker = new Faker();
-        String testEmail = faker.internet.email();
-        String testUsername = faker.internet.userName();
-        String testPassword = faker.internet.password();
+		//when
+		User user = userRepository.findByEmail(email).orElseThrow();
 
-        userRepository.save(User.builder().email(testEmail).username(testUsername).password(testPassword).build());
+		//then
+		assertEquals(email, user.getEmail());
+		assertEquals(username, user.getUsername());
+	}
 
-        //when
-        User user = userRepository.findByEmail(testEmail).orElseThrow();
+	@Test
+	@DisplayName("findByEmail 테스트")
+	public void findByEmail() {
+		//given
+		UserRegisterFormDTO registerFormDTO = testUtils.createUserRegisterFormDTO();
 
-        //then
-        assertEquals(testEmail, user.getEmail());
-        assertEquals(testUsername, user.getUsername());
-    }
+		String username = registerFormDTO.getUsername();
+		String email = registerFormDTO.getEmail();
+		String password = registerFormDTO.getPassword();
 
-    @Test
-    @DisplayName("findByUsername 테스트")
-    @Transactional
-    public void findByUsername() {
-        //given
-        Faker faker = new Faker();
-        String testEmail = faker.internet.email();
-        String testUsername = faker.internet.userName();
-        String testPassword = faker.internet.password();
+		userRepository.save(User.builder()
+			.email(email)
+			.username(username)
+			.password(password)
+			.build());
 
-        userRepository.save(User.builder().email(testEmail).username(testUsername).password(testPassword).build());
+		//when
+		User user = userRepository.findByEmail(email).orElseThrow();
 
-        //when
-        User user = userRepository.findByUsername(testUsername).orElseThrow();
+		//then
+		assertEquals(email, user.getEmail());
+		assertEquals(username, user.getUsername());
+	}
 
-        //then
-        assertEquals(testEmail, user.getEmail());
-        assertEquals(testUsername, user.getUsername());
-    }
+	@Test
+	@DisplayName("findByUsername 테스트")
+	@Transactional
+	public void findByUsername() {
+		//given
+		UserRegisterFormDTO registerFormDTO = testUtils.createUserRegisterFormDTO();
+
+		String username = registerFormDTO.getUsername();
+		String email = registerFormDTO.getEmail();
+		String password = registerFormDTO.getPassword();
+
+		userRepository.save(User.builder()
+			.email(email)
+			.username(username)
+			.password(password)
+			.build());
+
+		//when
+		User user = userRepository.findByUsername(username).orElseThrow();
+
+		//then
+		assertEquals(email, user.getEmail());
+		assertEquals(username, user.getUsername());
+	}
 }
