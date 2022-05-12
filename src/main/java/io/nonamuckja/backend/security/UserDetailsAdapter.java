@@ -18,7 +18,7 @@ public class UserDetailsAdapter extends org.springframework.security.core.userde
 			user.getPassword(),
 			user.getRoles()
 				.stream()
-				.map(role -> new SimpleGrantedAuthority("ROLE_" + role.name()))
+				.map(role -> new SimpleGrantedAuthority(role.getKey()))
 				.collect(Collectors.toList())
 		);
 		this.userDTO = UserDTO.fromEntity(user);
