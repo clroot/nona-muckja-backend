@@ -23,7 +23,7 @@ import io.nonamuckja.backend.dto.UserRegisterFormDTO;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
-class UserControllerTest {
+class AuthControllerTest {
 
 	@Autowired
 	private UserRepository userRepository;
@@ -38,7 +38,7 @@ class UserControllerTest {
 		//given
 		long beforeCount = userRepository.count();
 		UserRegisterFormDTO userRegisterFormDTO = testUtils.createUserRegisterFormDTO();
-		String url = "/api/user/register";
+		String url = "/api/v1/auth/register";
 
 		//when
 		mockMvc.perform(post(url)

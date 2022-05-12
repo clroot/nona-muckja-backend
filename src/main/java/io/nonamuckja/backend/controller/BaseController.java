@@ -1,5 +1,9 @@
 package io.nonamuckja.backend.controller;
 
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,8 +17,8 @@ import lombok.RequiredArgsConstructor;
 public class BaseController {
 
 	@GetMapping("/")
-	public String index() {
-		return "index";
+	public void index(HttpServletResponse response) throws IOException {
+		response.sendRedirect("/swagger-ui/");
 	}
 
 	@PreAuthorize("hasRole('USER')")
