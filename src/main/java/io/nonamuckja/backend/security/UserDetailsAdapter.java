@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import io.nonamuckja.backend.domain.user.User;
-import io.nonamuckja.backend.dto.UserDTO;
+import io.nonamuckja.backend.web.dto.UserDTO;
 import lombok.Getter;
 
 @Getter

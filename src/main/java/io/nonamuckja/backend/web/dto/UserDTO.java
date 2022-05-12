@@ -1,4 +1,4 @@
-package io.nonamuckja.backend.dto;
+package io.nonamuckja.backend.web.dto;
 
 import io.nonamuckja.backend.domain.user.User;
 import lombok.AccessLevel;

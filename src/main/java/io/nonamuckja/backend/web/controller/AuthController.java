@@ -1,4 +1,4 @@
-package io.nonamuckja.backend.controller;
+package io.nonamuckja.backend.web.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.nonamuckja.backend.domain.user.User;
 import io.nonamuckja.backend.domain.user.UserRepository;
-import io.nonamuckja.backend.dto.UserDTO;
-import io.nonamuckja.backend.dto.UserLoginFormDTO;
-import io.nonamuckja.backend.dto.UserRegisterFormDTO;
 import io.nonamuckja.backend.service.AuthService;
+import io.nonamuckja.backend.web.dto.UserDTO;
+import io.nonamuckja.backend.web.dto.UserLoginFormDTO;
+import io.nonamuckja.backend.web.dto.UserRegisterFormDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

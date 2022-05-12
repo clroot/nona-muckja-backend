@@ -1,4 +1,4 @@
-package io.nonamuckja.backend.controller;
+package io.nonamuckja.backend.web.controller;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;

@@ -10,8 +10,8 @@ import io.nonamuckja.backend.domain.Address;
 import io.nonamuckja.backend.domain.user.User;
 import io.nonamuckja.backend.domain.user.UserRepository;
 import io.nonamuckja.backend.domain.user.UserRole;
-import io.nonamuckja.backend.dto.AddressDTO;
-import io.nonamuckja.backend.dto.UserRegisterFormDTO;
+import io.nonamuckja.backend.web.dto.AddressDTO;
+import io.nonamuckja.backend.web.dto.UserRegisterFormDTO;
 
 @Component
 @Transactional

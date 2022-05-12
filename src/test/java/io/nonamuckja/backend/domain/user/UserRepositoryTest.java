@@ -9,11 +9,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import io.nonamuckja.backend.TestUtils;
-import io.nonamuckja.backend.dto.UserRegisterFormDTO;
+import io.nonamuckja.backend.web.dto.UserRegisterFormDTO;
 
 @SpringBootTest
 @Transactional
-@SuppressWarnings("NonAsciiCharacters")
 class UserRepositoryTest {
 
 	@Autowired
@@ -24,7 +23,7 @@ class UserRepositoryTest {
 
 	@Test
 	@DisplayName("유저_저장_테스트")
-	public void 유저_저장_테스트() {
+	public void testUserSave() {
 		//given
 		UserRegisterFormDTO registerFormDTO = testUtils.createUserRegisterFormDTO();
 

@@ -1,4 +1,4 @@
-package io.nonamuckja.backend.service;
+package io.nonamuckja.backend.security;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

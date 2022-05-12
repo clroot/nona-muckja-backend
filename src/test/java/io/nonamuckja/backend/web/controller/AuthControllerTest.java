@@ -1,4 +1,4 @@
-package io.nonamuckja.backend.controller;
+package io.nonamuckja.backend.web.controller;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -18,7 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.nonamuckja.backend.TestUtils;
 import io.nonamuckja.backend.domain.user.UserRepository;
-import io.nonamuckja.backend.dto.UserRegisterFormDTO;
+import io.nonamuckja.backend.web.dto.UserRegisterFormDTO;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)

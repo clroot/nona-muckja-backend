@@ -1,4 +1,4 @@
-package io.nonamuckja.backend.dto;
+package io.nonamuckja.backend.web.dto;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -12,7 +12,13 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class UserLoginFormDTO {
+public class UserRegisterFormDTO {
+
 	private String username;
+
 	private String password;
+
+	private String email;
+
+	private AddressDTO address;
 }

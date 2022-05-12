@@ -15,12 +15,12 @@ import org.springframework.transaction.annotation.Transactional;
 import io.nonamuckja.backend.TestUtils;
 import io.nonamuckja.backend.domain.user.User;
 import io.nonamuckja.backend.domain.user.UserRepository;
-import io.nonamuckja.backend.dto.UserLoginFormDTO;
-import io.nonamuckja.backend.dto.UserRegisterFormDTO;
 import io.nonamuckja.backend.exception.AuthException;
 import io.nonamuckja.backend.exception.UserDuplicateException;
 import io.nonamuckja.backend.security.JwtTokenUtils;
 import io.nonamuckja.backend.security.UserDetailsAdapter;
+import io.nonamuckja.backend.web.dto.UserLoginFormDTO;
+import io.nonamuckja.backend.web.dto.UserRegisterFormDTO;
 
 @SpringBootTest
 @Transactional
