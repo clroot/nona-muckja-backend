@@ -46,7 +46,7 @@ public class User extends BaseTimeEntity {
 	@Column(nullable = false)
 	private String password;
 
-	@Column(nullable = false)
+	@Column
 	private String picture;
 
 	@Embedded
@@ -61,10 +61,8 @@ public class User extends BaseTimeEntity {
 		roles.add(role);
 	}
 
-	public User update(String username, String picture) {
+	public void updateUsernameAndPicture(String username, String picture) {
 		this.username = username;
 		this.picture = picture;
-
-		return this;
 	}
 }
