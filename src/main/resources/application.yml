@@ -3,6 +3,7 @@ spring:
     import:
       - classpath:application-datasource.yml
       - classpath:application-oauth-secret.yml
+      - classpath:application-secret.yml
   jpa:
     hibernate:
       ddl-auto: update
@@ -19,7 +20,6 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
-
 logging:
   level:
     org:

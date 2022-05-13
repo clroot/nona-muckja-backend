@@ -1,26 +1,29 @@
 package io.nonamuckja.backend.security.jwt;
 
 import java.io.Serializable;
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 
 @Component
 public class JwtTokenUtilsImpl implements JwtTokenUtils, Serializable {
 
-	public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
+	private final Key key;
 
-	Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+	public JwtTokenUtilsImpl(@Value("${nonamuckja.jwt-secret}") String secretString) {
+		this.key = Keys.hmacShaKeyFor(secretString.getBytes(StandardCharsets.UTF_8));
+	}
 
 	@Override
 	public String generateToken(UserDetails userDetails) {
