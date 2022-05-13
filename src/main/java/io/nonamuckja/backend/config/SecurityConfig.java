@@ -33,11 +33,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
 	@Bean
-	PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
-
-	@Bean
 	@Override
 	public AuthenticationManager authenticationManagerBean() throws Exception {
 		return super.authenticationManagerBean();
@@ -49,5 +44,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 			.and()
 			.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+		http.oauth2Login().userInfoEndpoint().userService(customOAuth2UserService);
 	}
 }
