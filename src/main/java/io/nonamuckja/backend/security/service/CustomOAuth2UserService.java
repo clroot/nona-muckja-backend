@@ -1,4 +1,4 @@
-package io.nonamuckja.backend.service;
+package io.nonamuckja.backend.security.service;
 
 import java.util.Optional;
 import java.util.stream.Collectors;
