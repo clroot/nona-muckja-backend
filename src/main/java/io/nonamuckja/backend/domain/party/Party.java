@@ -1,13 +1,28 @@
 package io.nonamuckja.backend.domain.party;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 import io.nonamuckja.backend.domain.Address;
 import io.nonamuckja.backend.domain.BaseTimeEntity;
 import io.nonamuckja.backend.domain.user.User;
-import lombok.*;
-
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "party")
@@ -17,18 +32,18 @@ import java.util.List;
 @Getter
 public class Party extends BaseTimeEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "host_user_id")
-    private User host;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "host_user_id")
+	private User host;
 
-    @Embedded
-    private Address address;
+	@Embedded
+	private Address address;
 
-    @OneToMany(mappedBy = "party", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @Builder.Default
-    private List<PartyUser> members = new ArrayList<>();
+	@OneToMany(mappedBy = "party", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@Builder.Default
+	private List<PartyUser> members = new ArrayList<>();
 }

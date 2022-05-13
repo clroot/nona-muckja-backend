@@ -1,4 +1,4 @@
-package io.nonamuckja.backend.controller;
+package io.nonamuckja.backend.web.controller;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -16,29 +16,29 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import io.bloco.faker.Faker;
+import io.nonamuckja.backend.TestUtils;
 import io.nonamuckja.backend.domain.user.UserRepository;
-import io.nonamuckja.backend.dto.AddressDTO;
-import io.nonamuckja.backend.dto.UserRegisterFormDTO;
+import io.nonamuckja.backend.web.dto.UserRegisterFormDTO;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
-class UserControllerTest {
+class AuthControllerTest {
 
 	@Autowired
 	private UserRepository userRepository;
-
 	@Autowired
 	private MockMvc mockMvc;
+	@Autowired
+	private TestUtils testUtils;
 
 	@Test
 	@DisplayName("/register 테스트")
 	public void register() throws Exception {
 		//given
 		long beforeCount = userRepository.count();
-		UserRegisterFormDTO userRegisterFormDTO = createUserRegisterFormDTO();
-		String url = "/api/user/register";
+		UserRegisterFormDTO userRegisterFormDTO = testUtils.createUserRegisterFormDTO();
+		String url = "/api/v1/auth/register";
 
 		//when
 		mockMvc.perform(post(url)
@@ -49,31 +49,5 @@ class UserControllerTest {
 
 		//then
 		assertEquals(beforeCount + 1, userRepository.count());
-	}
-
-	private UserRegisterFormDTO createUserRegisterFormDTO() {
-		Faker faker = new Faker();
-		String username = faker.internet.userName();
-		String password = faker.internet.password();
-		String email = faker.internet.email();
-		AddressDTO address = createAddressDTO();
-
-		return UserRegisterFormDTO.builder()
-			.username(username)
-			.password(password)
-			.email(email)
-			.address(address)
-			.build();
-	}
-
-	private AddressDTO createAddressDTO() {
-		Faker faker = new Faker();
-		return AddressDTO.builder()
-			.address(faker.address.city() + " " + faker.address.secondaryAddress())
-			.roadAddress(faker.address.streetAddress())
-			.zipCode(faker.address.postcode())
-			.x(Double.parseDouble(faker.number.decimal(2, 14)))
-			.y(Double.parseDouble(faker.number.decimal(3, 14)))
-			.build();
 	}
 }

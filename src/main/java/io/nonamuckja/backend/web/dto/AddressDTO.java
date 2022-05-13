@@ -1,4 +1,4 @@
-package io.nonamuckja.backend.dto;
+package io.nonamuckja.backend.web.dto;
 
 import io.nonamuckja.backend.domain.Address;
 import lombok.AccessLevel;
@@ -23,6 +23,18 @@ public class AddressDTO {
 	private Double x; // longitude
 
 	private Double y; // latitude
+
+	public static AddressDTO fromEntity(Address address) {
+		AddressDTO dto = new AddressDTO();
+
+		dto.address = address.getAddress();
+		dto.roadAddress = address.getRoadAddress();
+		dto.zipCode = address.getZipCode();
+		dto.x = address.getX();
+		dto.y = address.getY();
+
+		return dto;
+	}
 
 	public Address toEntity() {
 		return Address.builder()
