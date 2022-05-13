@@ -52,6 +52,10 @@ public class User extends BaseTimeEntity {
 	@Embedded
 	private Address address;
 
+	@Enumerated(EnumType.STRING)
+	@Builder.Default
+	private OAuthProvider social = OAuthProvider.LOCAL;
+
 	@ElementCollection(fetch = FetchType.LAZY)
 	@Enumerated(EnumType.STRING)
 	@Builder.Default
