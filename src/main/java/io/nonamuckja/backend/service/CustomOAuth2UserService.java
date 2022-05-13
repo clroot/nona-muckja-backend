@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 import io.nonamuckja.backend.domain.user.OAuthProvider;
 import io.nonamuckja.backend.domain.user.User;
 import io.nonamuckja.backend.domain.user.UserRepository;
-import io.nonamuckja.backend.dto.OAuthAttributes;
+import io.nonamuckja.backend.web.dto.OAuthAttributes;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
