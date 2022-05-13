@@ -1,6 +1,8 @@
 spring:
   config:
-    import: classpath:application-datasource.yml
+    import:
+      - classpath:application-datasource.yml
+      - classpath:application-oauth-secret.yml
   jpa:
     hibernate:
       ddl-auto: update
@@ -17,11 +19,7 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
-  security:
-    oauth2:
-      client:
-        clientId:570212311623-ggtmucguh3nr3c89v4i38j4rjk11n061.apps.googleusercontent.com
-          clientSecret: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
+
 logging:
   level:
     org:
