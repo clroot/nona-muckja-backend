@@ -28,7 +28,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "party", indexes = {@Index(name = "idx_party_host", columnList = "host")})
+@Table(name = "party", indexes = {@Index(name = "idx_party_host", columnList = "host_user_id")})
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -46,7 +46,7 @@ public class Party extends BaseTimeEntity {
 	@Embedded
 	private Address address;
 
-	private Long maxMemberLimit;
+	private Long limitMemberCount;
 
 	@Enumerated(EnumType.STRING)
 	@Builder.Default
@@ -55,4 +55,11 @@ public class Party extends BaseTimeEntity {
 	@OneToMany(mappedBy = "party", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@Builder.Default
 	private List<PartyUser> members = new ArrayList<>();
+
+	public void joinMember(User member) {
+		members.add(PartyUser.builder()
+			.party(this)
+			.user(member)
+			.build());
+	}
 }

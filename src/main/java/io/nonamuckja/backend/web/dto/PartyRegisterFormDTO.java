@@ -12,7 +12,7 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PartyCreateFormDTO {
+public class PartyRegisterFormDTO {
 	private AddressDTO address;
-	private Long maxMemberLimit;
+	private Long limitMemberCount;
 }
