@@ -12,6 +12,15 @@ class NonaMuckjaBackendApplicationTests {
 	void contextLoads() {
 	}
 
+	@SelectPackages({
+		"io.nonamuckja.backend.domain",
+		"io.nonamuckja.backend.service",
+		"io.nonamuckja.backend.web",
+		"io.nonamuckja.backend.security"})
+	@Suite
+	public static class AllTestSuite {
+	}
+
 	@SelectPackages("io.nonamuckja.backend.domain")
 	@Suite
 	public static class DomainTestSuite {
