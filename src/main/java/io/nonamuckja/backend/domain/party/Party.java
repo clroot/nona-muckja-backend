@@ -6,10 +6,13 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -25,10 +28,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "party")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "party", indexes = {@Index(name = "idx_party_host", columnList = "host")})
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Party extends BaseTimeEntity {
 
@@ -44,6 +47,10 @@ public class Party extends BaseTimeEntity {
 	private Address address;
 
 	private Long maxMemberLimit;
+
+	@Enumerated(EnumType.STRING)
+	@Builder.Default
+	private PartyStatus status = PartyStatus.OPEN;
 
 	@OneToMany(mappedBy = "party", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@Builder.Default

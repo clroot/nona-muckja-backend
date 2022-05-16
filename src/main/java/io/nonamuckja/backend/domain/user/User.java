@@ -26,9 +26,9 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(indexes = {@Index(name = "idx_user_email", columnList = "email", unique = true)})
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class User extends BaseTimeEntity {
 
