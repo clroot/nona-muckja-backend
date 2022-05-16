@@ -3,7 +3,8 @@
     {
       "name": "nonamuckja.jwt-secret",
       "type": "java.lang.String",
-      "description": "JWT secret key."
+      "description": "JWT secret key.",
+      "defaultValue": "some-secret-key"
     }
   ]
 }

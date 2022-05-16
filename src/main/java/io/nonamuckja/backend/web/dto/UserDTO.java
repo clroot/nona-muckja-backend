@@ -29,4 +29,13 @@ public class UserDTO {
 
 		return dto;
 	}
+
+	public User toEntity() {
+		return User.builder()
+			.id(id)
+			.username(username)
+			.email(email)
+			.address(address.toEntity())
+			.build();
+	}
 }

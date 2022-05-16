@@ -11,11 +11,15 @@ import javax.persistence.Table;
 
 import io.nonamuckja.backend.domain.BaseTimeEntity;
 import io.nonamuckja.backend.domain.user.User;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "party_user")
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 public class PartyUser extends BaseTimeEntity {

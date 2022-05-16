@@ -25,6 +25,18 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<>(errorDTO, exception.getStatus());
 	}
 
+	@ExceptionHandler(IllegalStateException.class)
+	public ResponseEntity<ErrorDTO> handleIllegalStateException(IllegalStateException exception) {
+		log.error("Exception: {}", exception.getMessage());
+
+		ErrorDTO errorDTO = ErrorDTO.builder()
+			.message(exception.getMessage())
+			.status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+			.build();
+
+		return new ResponseEntity<>(errorDTO, HttpStatus.BAD_REQUEST);
+	}
+
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ErrorDTO> handleException(Exception exception) {
 		log.error("Exception: {}", exception.getMessage());
