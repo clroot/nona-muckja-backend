@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.nonamuckja.backend.domain.user.User;
 import io.nonamuckja.backend.domain.user.UserRepository;
 import io.nonamuckja.backend.service.AuthService;
+import io.nonamuckja.backend.web.dto.TokenResponseDTO;
 import io.nonamuckja.backend.web.dto.UserDTO;
 import io.nonamuckja.backend.web.dto.UserLoginFormDTO;
 import io.nonamuckja.backend.web.dto.UserRegisterFormDTO;
@@ -25,9 +26,9 @@ public class AuthController {
 	private final UserRepository userRepository;
 
 	@PostMapping("/login")
-	public ResponseEntity<?> login(@RequestBody UserLoginFormDTO loginFormDTO) {
+	public ResponseEntity<TokenResponseDTO> login(@RequestBody UserLoginFormDTO loginFormDTO) {
 		log.info("login: {}", loginFormDTO.getUsername());
-		String token = authService.login(loginFormDTO);
+		TokenResponseDTO token = authService.login(loginFormDTO);
 		log.info("login success: {}", loginFormDTO.getUsername());
 		return ResponseEntity.ok(token);
 	}
