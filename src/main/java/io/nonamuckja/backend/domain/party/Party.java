@@ -43,6 +43,8 @@ public class Party extends BaseTimeEntity {
 	@Embedded
 	private Address address;
 
+	private Long maxMemberLimit;
+
 	@OneToMany(mappedBy = "party", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@Builder.Default
 	private List<PartyUser> members = new ArrayList<>();
