@@ -56,10 +56,31 @@ public class Party extends BaseTimeEntity {
 	@Builder.Default
 	private List<PartyUser> members = new ArrayList<>();
 
+	/*=====BUSINESS METHODS=====*/
 	public void joinMember(User member) {
 		members.add(PartyUser.builder()
 			.party(this)
 			.user(member)
 			.build());
+	}
+
+	public void leaveMember(User member) {
+		members.removeIf(m -> m.getUser().getId().equals(member.getId()));
+	}
+
+	public void startDelivery() {
+		status = PartyStatus.DELIVERING;
+	}
+
+	public void finishDelivery() {
+		status = PartyStatus.DELIVERED;
+	}
+
+	public void finishParty() {
+		status = PartyStatus.FINISHED;
+	}
+
+	public void cancelParty() {
+		status = PartyStatus.CANCELED;
 	}
 }
