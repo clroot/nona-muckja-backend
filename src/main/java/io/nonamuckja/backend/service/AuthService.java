@@ -21,6 +21,7 @@ import io.nonamuckja.backend.exception.AuthException;
 import io.nonamuckja.backend.exception.UserDuplicateException;
 import io.nonamuckja.backend.security.jwt.JwtTokenUtils;
 import io.nonamuckja.backend.web.dto.AddressDTO;
+import io.nonamuckja.backend.web.dto.TokenResponseDTO;
 import io.nonamuckja.backend.web.dto.UserLoginFormDTO;
 import io.nonamuckja.backend.web.dto.UserRegisterFormDTO;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +38,7 @@ public class AuthService {
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
 
-	public String login(UserLoginFormDTO loginFormDTO) {
+	public TokenResponseDTO login(UserLoginFormDTO loginFormDTO) {
 		final String username = loginFormDTO.getUsername();
 		final String password = loginFormDTO.getPassword();
 
@@ -47,7 +48,10 @@ public class AuthService {
 			);
 			if (auth.isAuthenticated()) {
 				UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-				return jwtTokenUtils.generateToken(userDetails);
+				String accessToken = jwtTokenUtils.generateToken(userDetails);
+				return TokenResponseDTO.builder()
+					.accessToken(accessToken)
+					.build();
 			} else {
 				throw new BadCredentialsException("Invalid username or password");
 			}

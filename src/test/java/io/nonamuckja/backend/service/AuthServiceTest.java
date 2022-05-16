@@ -19,6 +19,7 @@ import io.nonamuckja.backend.exception.AuthException;
 import io.nonamuckja.backend.exception.UserDuplicateException;
 import io.nonamuckja.backend.security.UserDetailsAdapter;
 import io.nonamuckja.backend.security.jwt.JwtTokenUtils;
+import io.nonamuckja.backend.web.dto.TokenResponseDTO;
 import io.nonamuckja.backend.web.dto.UserLoginFormDTO;
 import io.nonamuckja.backend.web.dto.UserRegisterFormDTO;
 
@@ -63,11 +64,12 @@ class AuthServiceTest {
 		em.clear();
 
 		//when
-		String token = authService.login(loginFormDTO);
+		TokenResponseDTO token = authService.login(loginFormDTO);
+		String accessToken = token.getAccessToken();
 
 		//then
-		assertTrue(jwtTokenUtils.validateToken(token, userDetails));
-		assertEquals(username, jwtTokenUtils.getUsernameFromToken(token));
+		assertTrue(jwtTokenUtils.validateToken(accessToken, userDetails));
+		assertEquals(username, jwtTokenUtils.getUsernameFromToken(accessToken));
 	}
 
 	@Test
