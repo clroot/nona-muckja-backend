@@ -1,4 +1,4 @@
-package io.nonamuckja.backend.service;
+package io.nonamuckja.backend.security.service;
 
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -14,9 +14,10 @@ import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+import io.nonamuckja.backend.domain.user.OAuthProvider;
 import io.nonamuckja.backend.domain.user.User;
 import io.nonamuckja.backend.domain.user.UserRepository;
-import io.nonamuckja.backend.dto.OAuthAttributes;
+import io.nonamuckja.backend.web.dto.OAuthAttributes;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -58,7 +59,12 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 			user = result.get();
 			user.updateUsernameAndPicture(username, picture);
 		} else {
-			user = User.builder().email(email).username(username).picture(picture).build();
+			user = User.builder()
+				.email(email)
+				.username(username)
+				.picture(picture)
+				.social(OAuthProvider.GOOGLE)
+				.build();
 			userRepository.save(user);
 		}
 

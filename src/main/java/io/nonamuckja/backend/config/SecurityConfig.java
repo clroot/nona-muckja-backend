@@ -13,7 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import io.nonamuckja.backend.security.jwt.JwtRequestFilter;
-import io.nonamuckja.backend.service.CustomOAuth2UserService;
+import io.nonamuckja.backend.security.service.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
