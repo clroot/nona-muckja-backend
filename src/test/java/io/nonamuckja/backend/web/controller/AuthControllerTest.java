@@ -5,7 +5,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import org.apache.commons.lang3.StringUtils;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -34,11 +33,6 @@ class AuthControllerTest {
 	private MockMvc mockMvc;
 	@Autowired
 	private TestUtils testUtils;
-
-	@AfterEach
-	void tearDown() {
-		userRepository.deleteAll();
-	}
 
 	@Test
 	@DisplayName("/register 테스트")
