@@ -11,6 +11,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 @Inherited
-@PreAuthorize("hasAnyRole('ADMIN', 'USER')")
-public @interface CheckLoginUser {
+@PreAuthorize(value = "isAnonymous()")
+public @interface CheckNotLoginUser {
 }
