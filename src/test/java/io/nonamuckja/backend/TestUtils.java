@@ -34,6 +34,20 @@ public class TestUtils {
 	@Autowired
 	private AuthService authService;
 
+	public User createUser() {
+		Faker faker = new Faker();
+
+		String email = faker.internet().emailAddress();
+		String username = faker.name().username();
+		String password = faker.internet().password();
+
+		return createUser(email, username, password);
+	}
+
+	public User createUser(UserRegisterFormDTO registerFormDTO) {
+		return createUser(registerFormDTO.getEmail(), registerFormDTO.getUsername(), registerFormDTO.getPassword());
+	}
+
 	public User createUser(String email, String username, String password) {
 		UserRegisterFormDTO userRegisterDTO = UserRegisterFormDTO.builder()
 			.email(email)
@@ -45,16 +59,6 @@ public class TestUtils {
 		Long registeredId = authService.register(userRegisterDTO);
 
 		return userRepository.findById(registeredId).orElseThrow();
-	}
-
-	public User createUser() {
-		Faker faker = new Faker();
-
-		String email = faker.internet().emailAddress();
-		String username = faker.name().username();
-		String password = faker.internet().password();
-
-		return createUser(email, username, password);
 	}
 
 	public Party createParty(User host, Long limitMemberCount, AddressDTO address) {

@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -62,11 +63,14 @@ class AuthControllerTest {
 	@DisplayName("/login 테스트")
 	public void testLoginEndpoint() throws Exception {
 		//given
-		testUtils.createUser("test@email.com", "test", "password");
+		UserRegisterFormDTO registerFormDTO = testUtils.createUserRegisterFormDTO();
+		testUtils.createUser(registerFormDTO);
+
 		UserLoginFormDTO loginFormDTO = UserLoginFormDTO.builder()
-			.username("test")
-			.password("password")
+			.username(registerFormDTO.getUsername())
+			.password(registerFormDTO.getPassword())
 			.build();
+
 		String url = "/api/v1/auth/login";
 
 		//when & then
@@ -81,15 +85,17 @@ class AuthControllerTest {
 	@DisplayName("/login 실패 테스트")
 	public void test() throws Exception {
 		//given
-		testUtils.createUser("test@email.com", "test", "password");
+		UserRegisterFormDTO registerFormDTO = testUtils.createUserRegisterFormDTO();
+		testUtils.createUser(registerFormDTO);
+
 		UserLoginFormDTO wrongUsernameLoginDTO = UserLoginFormDTO.builder()
-			.username("wrong-username")
-			.password("password")
+			.username(StringUtils.reverse(registerFormDTO.getUsername()))
+			.password(registerFormDTO.getPassword())
 			.build();
 
 		UserLoginFormDTO wrongPasswordLoginDTO = UserLoginFormDTO.builder()
-			.username("test")
-			.password("wrong-password")
+			.username(registerFormDTO.getUsername())
+			.password(StringUtils.reverse(registerFormDTO.getPassword()))
 			.build();
 		String url = "/api/v1/auth/login";
 
