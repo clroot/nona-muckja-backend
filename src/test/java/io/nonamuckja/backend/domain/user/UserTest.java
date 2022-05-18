@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import io.bloco.faker.Faker;
+import com.github.javafaker.Faker;
 
 class UserTest {
 
@@ -14,8 +14,8 @@ class UserTest {
 	public void createUserByBuilder() {
 		//given
 		Faker faker = new Faker();
-		String testEmail = faker.internet.email();
-		String testUsername = faker.internet.userName();
+		String testEmail = faker.internet().emailAddress();
+		String testUsername = faker.name().username();
 
 		//when
 		User user = User.builder().email(testEmail).username(testUsername).build();
@@ -30,8 +30,8 @@ class UserTest {
 	public void addRole() {
 		//given
 		Faker faker = new Faker();
-		String testEmail = faker.internet.email();
-		String testUsername = faker.internet.userName();
+		String testEmail = faker.internet().emailAddress();
+		String testUsername = faker.name().username();
 		User user = User.builder().email(testEmail).username(testUsername).build();
 		int beforeRoleCount = user.getRoles().size();
 

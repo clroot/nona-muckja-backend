@@ -4,7 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import io.bloco.faker.Faker;
+import com.github.javafaker.Faker;
+
 import io.nonamuckja.backend.domain.Address;
 import io.nonamuckja.backend.domain.party.Party;
 import io.nonamuckja.backend.domain.party.PartyRepository;
@@ -33,6 +34,20 @@ public class TestUtils {
 	@Autowired
 	private AuthService authService;
 
+	public User createUser() {
+		Faker faker = new Faker();
+
+		String email = faker.internet().emailAddress();
+		String username = faker.name().username();
+		String password = faker.internet().password();
+
+		return createUser(email, username, password);
+	}
+
+	public User createUser(UserRegisterFormDTO registerFormDTO) {
+		return createUser(registerFormDTO.getEmail(), registerFormDTO.getUsername(), registerFormDTO.getPassword());
+	}
+
 	public User createUser(String email, String username, String password) {
 		UserRegisterFormDTO userRegisterDTO = UserRegisterFormDTO.builder()
 			.email(email)
@@ -44,16 +59,6 @@ public class TestUtils {
 		Long registeredId = authService.register(userRegisterDTO);
 
 		return userRepository.findById(registeredId).orElseThrow();
-	}
-
-	public User createUser() {
-		Faker faker = new Faker();
-
-		String email = faker.internet.email();
-		String username = faker.internet.userName();
-		String password = faker.internet.password();
-
-		return createUser(email, username, password);
 	}
 
 	public Party createParty(User host, Long limitMemberCount, AddressDTO address) {
@@ -75,9 +80,9 @@ public class TestUtils {
 	public UserRegisterFormDTO createUserRegisterFormDTO() {
 		Faker faker = new Faker();
 
-		String username = faker.internet.userName();
-		String password = faker.internet.password();
-		String email = faker.internet.email();
+		String email = faker.internet().emailAddress();
+		String username = faker.name().username();
+		String password = faker.internet().password();
 
 		return UserRegisterFormDTO.builder()
 			.username(username)
@@ -90,11 +95,11 @@ public class TestUtils {
 	public AddressDTO createAddressDTO() {
 		Faker faker = new Faker();
 		return AddressDTO.builder()
-			.address(faker.address.city() + " " + faker.address.secondaryAddress())
-			.roadAddress(faker.address.streetAddress())
-			.zipCode(faker.address.postcode())
-			.x(Double.parseDouble(faker.number.decimal(2, 14)))
-			.y(Double.parseDouble(faker.number.decimal(3, 14)))
+			.address(faker.address().city() + " " + faker.address().secondaryAddress())
+			.roadAddress(faker.address().streetAddress())
+			.zipCode(faker.address().zipCode())
+			.x(Double.parseDouble(faker.address().longitude()))
+			.y(Double.parseDouble(faker.address().latitude()))
 			.build();
 	}
 

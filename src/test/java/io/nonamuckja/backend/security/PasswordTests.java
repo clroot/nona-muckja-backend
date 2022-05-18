@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import io.bloco.faker.Faker;
+import com.github.javafaker.Faker;
 
 @SpringBootTest
 public class PasswordTests {
@@ -21,7 +21,7 @@ public class PasswordTests {
 	public void passwordEncoderTest() {
 		//given
 		Faker faker = new Faker();
-		String password = faker.internet.password();
+		String password = faker.internet().password();
 
 		//when
 		String encodedPassword = passwordEncoder.encode(password);
