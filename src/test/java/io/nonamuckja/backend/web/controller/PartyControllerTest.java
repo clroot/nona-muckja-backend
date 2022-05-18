@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.nonamuckja.backend.TestUtils;
 import io.nonamuckja.backend.domain.party.PartyStatus;
+import io.nonamuckja.backend.exception.UserDuplicateException;
 import io.nonamuckja.backend.web.dto.AddressDTO;
 import io.nonamuckja.backend.web.dto.PartyRegisterFormDTO;
 
@@ -38,7 +39,12 @@ class PartyControllerTest {
 		String email = "testParty@email.com";
 		String username = "testParty";
 		String password = "test-password";
-		testUtils.createUser(email, username, password);
+
+		try {
+			testUtils.createUser(email, username, password);
+		} catch (UserDuplicateException e) {
+			// do nothing
+		}
 	}
 
 	@Test
@@ -73,5 +79,4 @@ class PartyControllerTest {
 			.andExpect(jsonPath("$.members").isArray())
 			.andReturn().getResponse();
 	}
-
 }
