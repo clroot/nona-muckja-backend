@@ -1,5 +1,6 @@
 package io.nonamuckja.backend.web.dto;
 
+import io.nonamuckja.backend.domain.Address;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,5 +21,5 @@ public class UserRegisterFormDTO {
 
 	private String email;
 
-	private AddressDTO address;
+	private Address address;
 }

@@ -14,13 +14,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import io.nonamuckja.backend.domain.Address;
 import io.nonamuckja.backend.domain.user.User;
 import io.nonamuckja.backend.domain.user.UserRepository;
 import io.nonamuckja.backend.domain.user.UserRole;
 import io.nonamuckja.backend.exception.AuthException;
 import io.nonamuckja.backend.exception.UserDuplicateException;
 import io.nonamuckja.backend.security.jwt.JwtTokenUtils;
-import io.nonamuckja.backend.web.dto.AddressDTO;
 import io.nonamuckja.backend.web.dto.TokenResponseDTO;
 import io.nonamuckja.backend.web.dto.UserLoginFormDTO;
 import io.nonamuckja.backend.web.dto.UserRegisterFormDTO;
@@ -72,13 +72,13 @@ public class AuthService {
 		String username = userRegisterFormDTO.getUsername();
 		String password = passwordEncoder.encode(userRegisterFormDTO.getPassword());
 		String email = userRegisterFormDTO.getEmail();
-		AddressDTO address = userRegisterFormDTO.getAddress();
+		Address address = userRegisterFormDTO.getAddress();
 
 		User user = User.builder()
 			.username(username)
 			.password(password)
 			.email(email)
-			.address(address.toEntity())
+			.address(address)
 			.build();
 
 		user.addRole(UserRole.USER);
