@@ -2,6 +2,7 @@ package io.nonamuckja.backend.web.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,5 +42,29 @@ public class PartyController {
 		PartyDTO registeredPartyDTO = PartyDTO.fromEntity(registeredParty);
 
 		return new ResponseEntity<>(registeredPartyDTO, HttpStatus.CREATED);
+	}
+
+	@PostMapping("/{id}/join")
+	@CheckLoginUser
+	public ResponseEntity<?> joinParty(@PathVariable("id") Long partyId, @AuthUserDTO UserDTO userDTO) {
+		log.info("Party join request received: partyId={}, userDTO={}", partyId, userDTO);
+
+		partyService.joinMember(partyId, userDTO);
+
+		log.info("Party join successful: partyId={}, userDTO={}", partyId, userDTO);
+
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
+	@PostMapping("/{id}/leave")
+	@CheckLoginUser
+	public ResponseEntity<?> leaveParty(@PathVariable("id") Long partyId, @AuthUserDTO UserDTO userDTO) {
+		log.info("Party leave request received: partyId={}, userDTO={}", partyId, userDTO);
+
+		partyService.leaveMember(partyId, userDTO);
+
+		log.info("Party leave successful: partyId={}, userDTO={}", partyId, userDTO);
+
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }

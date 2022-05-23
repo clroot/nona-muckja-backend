@@ -19,7 +19,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.nonamuckja.backend.TestUtils;
+import io.nonamuckja.backend.domain.party.Party;
 import io.nonamuckja.backend.domain.party.PartyStatus;
+import io.nonamuckja.backend.domain.user.User;
 import io.nonamuckja.backend.exception.UserDuplicateException;
 import io.nonamuckja.backend.web.dto.AddressDTO;
 import io.nonamuckja.backend.web.dto.PartyRegisterFormDTO;
@@ -78,5 +80,23 @@ class PartyControllerTest {
 			.andExpect(jsonPath("$.status").value(PartyStatus.OPEN.name()))
 			.andExpect(jsonPath("$.members").isArray())
 			.andReturn().getResponse();
+	}
+
+	@Test
+	@DisplayName("POST /api/v1/party/{id}/join 성공 테스트")
+	@WithUserDetails(value = "testParty")
+	public void test() throws Exception {
+		//given
+		User host = testUtils.createUser();
+		Party party = testUtils.createParty(host, 10L);
+		Long partyId = party.getId();
+		String url = "/api/v1/party/{id}/join".replace("{id}", partyId.toString());
+
+		//when & then
+		var res = mockMvc.perform(post(url))
+			.andExpect(status().isOk())
+			.andReturn().getResponse();
+
+		System.out.println("result: " + res.getContentAsString());
 	}
 }
