@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.nonamuckja.backend.domain.user.User;
 import io.nonamuckja.backend.domain.user.UserRepository;
+import io.nonamuckja.backend.security.CheckNotLoginUser;
 import io.nonamuckja.backend.service.AuthService;
 import io.nonamuckja.backend.web.dto.TokenResponseDTO;
 import io.nonamuckja.backend.web.dto.UserDTO;
@@ -26,6 +27,7 @@ public class AuthController {
 	private final UserRepository userRepository;
 
 	@PostMapping("/login")
+	@CheckNotLoginUser
 	public ResponseEntity<TokenResponseDTO> login(@RequestBody UserLoginFormDTO loginFormDTO) {
 		log.info("login: {}", loginFormDTO.getUsername());
 		TokenResponseDTO token = authService.login(loginFormDTO);
@@ -34,6 +36,7 @@ public class AuthController {
 	}
 
 	@PostMapping("/register")
+	@CheckNotLoginUser
 	public ResponseEntity<UserDTO> register(@RequestBody UserRegisterFormDTO userDTO) {
 		log.info("User registration request received: {}", userDTO);
 

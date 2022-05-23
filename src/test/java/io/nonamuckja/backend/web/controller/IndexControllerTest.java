@@ -16,6 +16,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 import io.nonamuckja.backend.TestUtils;
+import io.nonamuckja.backend.exception.UserDuplicateException;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
@@ -29,12 +30,20 @@ class IndexControllerTest {
 
 	@PostConstruct
 	void setUp() {
-		testUtils.createUser("test@email.com", "test", "password");
+		String email = "testIndex@email.com";
+		String username = "testIndex";
+		String password = "password";
+
+		try {
+			testUtils.createUser(email, username, password);
+		} catch (UserDuplicateException e) {
+			// do nothing
+		}
 	}
 
 	@Test
 	@DisplayName("@AuthUserDTO 테스트")
-	@WithUserDetails(value = "test")
+	@WithUserDetails(value = "testIndex")
 	public void testAuthUserDTO() throws Exception {
 		//given
 		String url = "/auth";
@@ -44,6 +53,6 @@ class IndexControllerTest {
 			.andReturn().getResponse().getContentAsString();
 
 		//then
-		assertEquals("test", result);
+		assertEquals("testIndex", result);
 	}
 }
