@@ -7,13 +7,13 @@ import org.springframework.transaction.annotation.Transactional;
 import com.github.javafaker.Faker;
 
 import io.nonamuckja.backend.domain.Address;
+import io.nonamuckja.backend.domain.Coordinate;
 import io.nonamuckja.backend.domain.party.Party;
 import io.nonamuckja.backend.domain.party.PartyRepository;
 import io.nonamuckja.backend.domain.user.User;
 import io.nonamuckja.backend.domain.user.UserRepository;
 import io.nonamuckja.backend.service.AuthService;
 import io.nonamuckja.backend.service.PartyService;
-import io.nonamuckja.backend.web.dto.AddressDTO;
 import io.nonamuckja.backend.web.dto.PartyRegisterFormDTO;
 import io.nonamuckja.backend.web.dto.UserDTO;
 import io.nonamuckja.backend.web.dto.UserRegisterFormDTO;
@@ -53,7 +53,7 @@ public class TestUtils {
 			.email(email)
 			.username(username)
 			.password(password)
-			.address(createAddressDTO())
+			.address(createAddress())
 			.build();
 
 		Long registeredId = authService.register(userRegisterDTO);
@@ -61,7 +61,7 @@ public class TestUtils {
 		return userRepository.findById(registeredId).orElseThrow();
 	}
 
-	public Party createParty(User host, Long limitMemberCount, AddressDTO address) {
+	public Party createParty(User host, Long limitMemberCount, Address address) {
 		PartyRegisterFormDTO partyRegisterDTO = PartyRegisterFormDTO.builder()
 			.address(address)
 			.limitMemberCount(limitMemberCount)
@@ -74,7 +74,7 @@ public class TestUtils {
 	}
 
 	public Party createParty(User host, Long limitMemberCount) {
-		return createParty(host, limitMemberCount, createAddressDTO());
+		return createParty(host, limitMemberCount, createAddress());
 	}
 
 	public UserRegisterFormDTO createUserRegisterFormDTO() {
@@ -88,22 +88,21 @@ public class TestUtils {
 			.username(username)
 			.password(password)
 			.email(email)
-			.address(createAddressDTO())
-			.build();
-	}
-
-	public AddressDTO createAddressDTO() {
-		Faker faker = new Faker();
-		return AddressDTO.builder()
-			.address(faker.address().city() + " " + faker.address().secondaryAddress())
-			.roadAddress(faker.address().streetAddress())
-			.zipCode(faker.address().zipCode())
-			.x(Double.parseDouble(faker.address().longitude()))
-			.y(Double.parseDouble(faker.address().latitude()))
+			.address(createAddress())
 			.build();
 	}
 
 	public Address createAddress() {
-		return createAddressDTO().toEntity();
+		Faker faker = new Faker();
+		return Address.builder()
+			.address(faker.address().city() + " " + faker.address().secondaryAddress())
+			.roadAddress(faker.address().streetAddress())
+			.zipCode(faker.address().zipCode())
+			.coordinate(Coordinate.builder()
+				.longitude(Double.parseDouble(faker.address().longitude()))
+				.latitude(Double.parseDouble(faker.address().latitude()))
+				.build())
+			.build();
+
 	}
 }

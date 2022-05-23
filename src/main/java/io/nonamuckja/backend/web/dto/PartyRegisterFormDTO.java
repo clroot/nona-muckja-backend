@@ -1,5 +1,6 @@
 package io.nonamuckja.backend.web.dto;
 
+import io.nonamuckja.backend.domain.Address;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,6 +14,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PartyRegisterFormDTO {
-	private AddressDTO address;
+	private Address address;
 	private Long limitMemberCount;
 }

@@ -37,7 +37,7 @@ class PartyServiceTest {
 		//given
 		User testUser = testUtils.createUser();
 		PartyRegisterFormDTO createFormDTO = PartyRegisterFormDTO.builder()
-			.address(testUtils.createAddressDTO())
+			.address(testUtils.createAddress())
 			.limitMemberCount(10L)
 			.build();
 

@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import io.nonamuckja.backend.domain.Address;
 import io.nonamuckja.backend.domain.party.Party;
 import io.nonamuckja.backend.domain.party.PartyRepository;
 import io.nonamuckja.backend.domain.party.PartyStatus;
@@ -11,7 +12,6 @@ import io.nonamuckja.backend.domain.user.User;
 import io.nonamuckja.backend.exception.PartyJoinException;
 import io.nonamuckja.backend.exception.PartyLeaveException;
 import io.nonamuckja.backend.exception.PartyNotFoundException;
-import io.nonamuckja.backend.web.dto.AddressDTO;
 import io.nonamuckja.backend.web.dto.PartyRegisterFormDTO;
 import io.nonamuckja.backend.web.dto.UserDTO;
 import lombok.RequiredArgsConstructor;
@@ -24,11 +24,11 @@ public class PartyService {
 
 	@Transactional
 	public Long createParty(PartyRegisterFormDTO createFormDTO, UserDTO userDTO) {
-		AddressDTO partyAddress = createFormDTO.getAddress();
+		Address partyAddress = createFormDTO.getAddress();
 		Long limitMemberCount = createFormDTO.getLimitMemberCount();
 
 		Party party = Party.builder()
-			.address(partyAddress.toEntity())
+			.address(partyAddress)
 			.host(userDTO.toEntity())
 			.limitMemberCount(limitMemberCount)
 			.status(PartyStatus.OPEN)

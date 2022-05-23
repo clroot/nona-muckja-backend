@@ -4,10 +4,10 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
+import io.nonamuckja.backend.domain.Address;
 import io.nonamuckja.backend.domain.user.User;
 import io.nonamuckja.backend.domain.user.UserRepository;
 import io.nonamuckja.backend.exception.UserNotFoundException;
-import io.nonamuckja.backend.web.dto.AddressDTO;
 import io.nonamuckja.backend.web.dto.UserDTO;
 import lombok.RequiredArgsConstructor;
 
@@ -24,9 +24,9 @@ public class UserService {
 	}
 
 	@Transactional
-	public void updateAddress(AddressDTO addressDTO, UserDTO userDTO) {
+	public void updateAddress(Address address, UserDTO userDTO) {
 		User user = getUserEntity(userDTO.getId());
-		user.updateAddress(addressDTO.toEntity());
+		user.updateAddress(address);
 	}
 
 	private User getUserEntity(Long userId) {

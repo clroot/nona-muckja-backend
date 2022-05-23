@@ -19,11 +19,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.nonamuckja.backend.TestUtils;
+import io.nonamuckja.backend.domain.Address;
 import io.nonamuckja.backend.domain.party.Party;
 import io.nonamuckja.backend.domain.party.PartyStatus;
 import io.nonamuckja.backend.domain.user.User;
 import io.nonamuckja.backend.exception.UserDuplicateException;
-import io.nonamuckja.backend.web.dto.AddressDTO;
 import io.nonamuckja.backend.web.dto.PartyRegisterFormDTO;
 
 @ExtendWith(SpringExtension.class)
@@ -56,7 +56,7 @@ class PartyControllerTest {
 		//given
 		String url = "/api/v1/party";
 
-		AddressDTO address = testUtils.createAddressDTO();
+		Address address = testUtils.createAddress();
 		Long limitMemberCount = 10L;
 
 		PartyRegisterFormDTO registerFormDTO = PartyRegisterFormDTO.builder()
@@ -73,8 +73,6 @@ class PartyControllerTest {
 			.andExpect(jsonPath("$.host.id").isNumber())
 			.andExpect(jsonPath("$.address").exists())
 			.andExpect(jsonPath("$.address.roadAddress").value(address.getRoadAddress()))
-			.andExpect(jsonPath("$.address.x").value(address.getX()))
-			.andExpect(jsonPath("$.address.y").value(address.getY()))
 			.andExpect(jsonPath("$.limitMemberCount").value(limitMemberCount))
 			.andExpect(jsonPath("$.currentMemberCount").value(1L))
 			.andExpect(jsonPath("$.status").value(PartyStatus.OPEN.name()))

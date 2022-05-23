@@ -1,5 +1,6 @@
 package io.nonamuckja.backend.web.dto;
 
+import io.nonamuckja.backend.domain.Address;
 import io.nonamuckja.backend.domain.user.User;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -17,7 +18,7 @@ public class UserDTO {
 
 	private String email;
 
-	private AddressDTO address;
+	private Address address;
 
 	public static UserDTO fromEntity(User user) {
 		UserDTO dto = new UserDTO();
@@ -25,7 +26,7 @@ public class UserDTO {
 		dto.id = user.getId();
 		dto.username = user.getUsername();
 		dto.email = user.getEmail();
-		dto.address = AddressDTO.fromEntity(user.getAddress());
+		dto.address = user.getAddress();
 
 		return dto;
 	}
@@ -35,7 +36,7 @@ public class UserDTO {
 			.id(id)
 			.username(username)
 			.email(email)
-			.address(address.toEntity())
+			.address(address)
 			.build();
 	}
 }

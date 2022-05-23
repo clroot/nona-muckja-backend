@@ -3,6 +3,7 @@ package io.nonamuckja.backend.web.dto;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import io.nonamuckja.backend.domain.Address;
 import io.nonamuckja.backend.domain.party.Party;
 import io.nonamuckja.backend.domain.party.PartyStatus;
 import lombok.AccessLevel;
@@ -20,7 +21,7 @@ import lombok.Setter;
 public class PartyDTO {
 	private Long id;
 	private UserDTO host;
-	private AddressDTO address;
+	private Address address;
 	private Long limitMemberCount;
 	private Long currentMemberCount;
 	private PartyStatus status;
@@ -30,7 +31,7 @@ public class PartyDTO {
 		return PartyDTO.builder()
 			.id(party.getId())
 			.host(UserDTO.fromEntity(party.getHost()))
-			.address(AddressDTO.fromEntity(party.getAddress()))
+			.address(party.getAddress())
 			.limitMemberCount(party.getLimitMemberCount())
 			.currentMemberCount((long)party.getMembers().size())
 			.status(party.getStatus())
@@ -44,7 +45,7 @@ public class PartyDTO {
 		return Party.builder()
 			.id(id)
 			.host(host.toEntity())
-			.address(address.toEntity())
+			.address(address)
 			.limitMemberCount(limitMemberCount)
 			.status(status)
 			.build();
