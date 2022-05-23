@@ -57,7 +57,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
 		if (result.isPresent()) {
 			user = result.get();
-			user.updateUsernameAndPicture(username, picture);
+			user.updatePicture(picture);
 		} else {
 			user = User.builder()
 				.email(email)
