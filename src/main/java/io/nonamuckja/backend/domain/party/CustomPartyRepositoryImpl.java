@@ -33,13 +33,18 @@ public class CustomPartyRepositoryImpl extends QuerydslRepositorySupport impleme
 		JPQLQuery<Party> query = from(party);
 
 		if (partySearch.getFrom() != null && partySearch.getTo() != null) {
+			double lat1 = partySearch.getFrom().getLatitude();
+			double lon1 = partySearch.getFrom().getLongitude();
+			double lat2 = partySearch.getTo().getLatitude();
+			double lon2 = partySearch.getTo().getLongitude();
+
 			query.where(
 				party.address.coordinate.latitude.between(
-					partySearch.getFrom().getLatitude(),
-					partySearch.getTo().getLatitude()),
+					Math.min(lat1, lat2),
+					Math.max(lat1, lat2)),
 				party.address.coordinate.longitude.between(
-					partySearch.getFrom().getLongitude(),
-					partySearch.getTo().getLongitude())
+					Math.min(lon1, lon2),
+					Math.max(lon1, lon2))
 			);
 		}
 
