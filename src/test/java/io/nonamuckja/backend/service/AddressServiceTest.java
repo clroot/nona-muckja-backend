@@ -10,12 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import io.nonamuckja.backend.TestUtils;
-import io.nonamuckja.backend.domain.Address;
 import io.nonamuckja.backend.domain.Coordinate;
 
 @SpringBootTest
 class AddressServiceTest {
-	private final Double toleranceInCoordinate = 0.00001;
 	@Autowired
 	private AddressService addressService;
 	@Autowired
@@ -55,26 +53,10 @@ class AddressServiceTest {
 	}
 
 	@Test
-	@DisplayName("getBias() 테스트")
-	public void testGetBias() {
-		// given
-		Address address = testUtils.createAddress();
-
-		var latitude = address.getCoordinate().getLatitude();
-		var longitude = address.getCoordinate().getLongitude();
-
-		// when
-		Double bias = addressService.calculateBias(address.getCoordinate());
-
-		// then
-		double calculate = (latitude * -1) + bias;
-		assertTrue(Math.abs(longitude - calculate) < toleranceInCoordinate);
-	}
-
-	@Test
 	@DisplayName("getDistanceAsKM() 테스트")
 	public void testGetDistanceAsMeter() {
 		//given
+		final double toleranceInCoordinate = 0.00001;
 		final double distanceByMap = 4.949862042019746;
 		var ssuCoordinate = Coordinate.builder()
 			.latitude(37.4963462)
