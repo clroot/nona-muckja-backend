@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AddressService {
 	private final double scale = 1000000.0;
+	private final Double epsilon = 0.001;
 
 	/**
 	 * 특정 (위도, 경도) 좌표를 기준으로 어느 거리만큼 떨어진 좌표를 반환한다. - 허용 오차: 5m
@@ -38,7 +39,9 @@ public class AddressService {
 				.longitude(longitude)
 				.build();
 
-			return getDistanceAsKm(candidate, center) >= radius;
+			var distance = getDistanceAsKm(candidate, center);
+
+			return radius - epsilon <= distance && distance <= radius + epsilon;
 		};
 
 		final long step = 10;
@@ -49,13 +52,10 @@ public class AddressService {
 		left = (long)(scaledLat - radius * radiusScale * scale);
 		right = scaledLat;
 
-		final long finalRight = right;
-		final long finalLeft = left;
 		long topLeftX = LongStream.range(left, right)
-			.map(i -> finalRight - i + finalLeft - 1)
 			.filter(i -> i % step == 0)
 			.filter(checkDistance)
-			.findFirst()
+			.findAny()
 			.orElseThrow();
 
 		Coordinate topLeft = Coordinate.builder()
@@ -70,7 +70,7 @@ public class AddressService {
 		long bottomRightX = LongStream.range(left, right)
 			.filter(i -> i % step == 0)
 			.filter(checkDistance)
-			.findFirst()
+			.findAny()
 			.orElseThrow();
 
 		Coordinate bottomRight = Coordinate.builder()
