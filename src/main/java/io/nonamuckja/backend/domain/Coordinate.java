@@ -75,7 +75,6 @@ public class Coordinate {
 	 */
 	public Pair<Coordinate, Coordinate> getVertex(Double radius) {
 		final double bias = calculateBias();
-		final double radiusScale = 0.1;
 		final long searchStep = 10;
 		final long scaledLat = (long)(latitude * SCALE);
 
@@ -99,7 +98,7 @@ public class Coordinate {
 		long right;
 
 		// calculate the coordinate of the left vertex
-		left = (long)(scaledLat - radius * radiusScale * SCALE);
+		left = (long)(scaledLat - Math.toRadians(radius) * SCALE);
 		right = scaledLat;
 
 		long leftVertexX = LongStream.rangeClosed(left, right)
@@ -115,7 +114,7 @@ public class Coordinate {
 
 		// calculate the coordinate of the right vertex
 		left = scaledLat;
-		right = (long)(scaledLat + radius * radiusScale * SCALE);
+		right = (long)(scaledLat + Math.toRadians(radius) * SCALE);
 
 		long rightVertexX = LongStream.rangeClosed(left, right)
 			.filter(i -> i % searchStep == 0)
