@@ -98,11 +98,16 @@ public class TestUtils {
 			.address(faker.address().city() + " " + faker.address().secondaryAddress())
 			.roadAddress(faker.address().streetAddress())
 			.zipCode(faker.address().zipCode())
-			.coordinate(Coordinate.builder()
-				.longitude(Double.parseDouble(faker.address().longitude()))
-				.latitude(Double.parseDouble(faker.address().latitude()))
-				.build())
+			.coordinate(createCoordinate())
 			.build();
 
+	}
+
+	public Coordinate createCoordinate() {
+		Faker faker = new Faker();
+		return Coordinate.builder()
+			.longitude(Double.parseDouble(faker.address().longitude()))
+			.latitude(Double.parseDouble(faker.address().latitude()))
+			.build();
 	}
 }
