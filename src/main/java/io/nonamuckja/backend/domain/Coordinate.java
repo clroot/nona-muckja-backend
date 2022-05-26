@@ -23,6 +23,7 @@ import lombok.ToString;
 @ToString(includeFieldNames = false)
 public class Coordinate {
 	private static final double SCALE = 1000000.0;
+	private static final Double VERTEX_GRADIENT = 1.0;
 	private static final Double DISTANCE_TOLERANCE = 0.001;
 	/**
 	 * 경도: x
@@ -122,12 +123,12 @@ public class Coordinate {
 	}
 
 	/**
-	 * 현재 좌표로부터 인접한 GPS 좌표를 계산하기 위해, 현재 좌표를 지나며 기울기가 -1인 직선의 방정식의 y 절편을 계산
+	 * 현재 좌표로부터 인접한 GPS 좌표를 계산하기 위해, 현재 좌표를 지나며 기울기가 GRADIENT 값인 직선의 방정식의 y 절편을 계산
 	 *
-	 * @return 현재 좌표를 지나며 기울기가 -1인 직선의 방정식의 y 절편
+	 * @return 현재 좌표를 지나며 기울기가 GRADIENT 값인 직선의 방정식의 y 절편
 	 */
 	private double calculateBias() {
-		return longitude + latitude;
+		return longitude - VERTEX_GRADIENT * latitude;
 	}
 
 	/**
@@ -138,6 +139,6 @@ public class Coordinate {
 	 * @return y 좌표 * scale
 	 */
 	private long calculateY(long scaledX, double bias) {
-		return (long)((-(double)scaledX / SCALE + bias) * SCALE);
+		return (long)((VERTEX_GRADIENT * scaledX / SCALE + bias) * SCALE);
 	}
 }
