@@ -22,8 +22,17 @@ import lombok.ToString;
 @Getter
 @ToString(includeFieldNames = false)
 public class Coordinate {
+	/**
+	 * The scale of the coordinate to calculate meter unit.
+	 */
 	private static final double SCALE = 1000000.0;
+	/**
+	 * The gradient of the coordinate's vertex box.
+	 */
 	private static final Double VERTEX_GRADIENT = 1.0;
+	/**
+	 * The tolerance for the distance between two coordinates.(1m)
+	 */
 	private static final Double DISTANCE_TOLERANCE = 0.001;
 	/**
 	 * 경도: x
@@ -37,7 +46,7 @@ public class Coordinate {
 	/*=====BUSINESS METHODS=====*/
 
 	/**
-	 * 현재 좌표와 주어진 좌표의 거리를 계산한다.(단위: km)
+	 * 현재 좌표와 주어진 좌표의 거리를 계산한다(단위: km).
 	 * haversine formula 을 이용.
 	 *
 	 * @param other 좌표
