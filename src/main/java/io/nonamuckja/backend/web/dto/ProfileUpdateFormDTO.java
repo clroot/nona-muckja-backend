@@ -1,9 +1,5 @@
 package io.nonamuckja.backend.web.dto;
 
-import javax.validation.constraints.NotBlank;
-
-import org.hibernate.validator.constraints.Range;
-
 import io.nonamuckja.backend.domain.Address;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -17,9 +13,10 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PartyRegisterFormDTO {
+public class ProfileUpdateFormDTO {
 
 	private Address address;
-	@Range(min=1,max=10)
-	private Long limitMemberCount;
+
+	private String picture;
+
 }
