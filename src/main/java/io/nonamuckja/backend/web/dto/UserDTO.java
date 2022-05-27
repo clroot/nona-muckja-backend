@@ -1,5 +1,11 @@
 package io.nonamuckja.backend.web.dto;
 
+
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+
+
 import io.nonamuckja.backend.domain.Address;
 import io.nonamuckja.backend.domain.user.User;
 import lombok.AccessLevel;
