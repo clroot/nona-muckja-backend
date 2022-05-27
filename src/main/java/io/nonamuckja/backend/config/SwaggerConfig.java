@@ -3,6 +3,7 @@ package io.nonamuckja.backend.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import io.nonamuckja.backend.web.dto.UserDTO;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
@@ -16,6 +17,7 @@ public class SwaggerConfig {
 	@Bean
 	public Docket api() {
 		return new Docket(DocumentationType.OAS_30)
+			.ignoredParameterTypes(UserDTO.class)
 			.select()
 			.apis(RequestHandlerSelectors.any())
 			.paths(PathSelectors.any())

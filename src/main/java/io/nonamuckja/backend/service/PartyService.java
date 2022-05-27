@@ -1,5 +1,11 @@
 package io.nonamuckja.backend.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -7,12 +13,16 @@ import org.springframework.transaction.annotation.Transactional;
 import io.nonamuckja.backend.domain.Address;
 import io.nonamuckja.backend.domain.party.Party;
 import io.nonamuckja.backend.domain.party.PartyRepository;
+import io.nonamuckja.backend.domain.party.PartySearch;
 import io.nonamuckja.backend.domain.party.PartyStatus;
 import io.nonamuckja.backend.domain.user.User;
 import io.nonamuckja.backend.exception.PartyJoinException;
 import io.nonamuckja.backend.exception.PartyLeaveException;
 import io.nonamuckja.backend.exception.PartyNotFoundException;
+import io.nonamuckja.backend.web.dto.PartyDTO;
 import io.nonamuckja.backend.web.dto.PartyRegisterFormDTO;
+import io.nonamuckja.backend.web.dto.PartySearchRequestDTO;
+import io.nonamuckja.backend.web.dto.PartyUpdateRequestDTO;
 import io.nonamuckja.backend.web.dto.UserDTO;
 import lombok.RequiredArgsConstructor;
 
@@ -21,6 +31,36 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PartyService {
 	private final PartyRepository partyRepository;
+
+	public Page<PartyDTO> list(Pageable pageable) {
+		var parties = partyRepository.findAll(pageable);
+
+		return new PageImpl<>(
+			parties.stream()
+				.map(PartyDTO::fromEntity)
+				.collect(Collectors.toList()),
+			pageable,
+			parties.getTotalElements());
+	}
+
+	public Page<PartyDTO> search(PartySearchRequestDTO searchRequestDTO, Pageable pageable) {
+		var clientCoordinate = searchRequestDTO.getClientLocation();
+		var radius = searchRequestDTO.getRadius();
+
+		var vertex = clientCoordinate.getVertex(radius);
+		PartySearch partySearch = PartySearch.builder()
+			.from(vertex.getLeft())
+			.to(vertex.getRight())
+			.status(searchRequestDTO.getStatus())
+			.build();
+
+		Page<Party> page = partyRepository.search(partySearch, pageable);
+		List<PartyDTO> content = page.getContent().stream()
+			.map(PartyDTO::fromEntity)
+			.collect(Collectors.toList());
+
+		return new PageImpl<>(content, pageable, page.getTotalElements());
+	}
 
 	@Transactional
 	public Long createParty(PartyRegisterFormDTO createFormDTO, UserDTO userDTO) {
@@ -60,43 +100,24 @@ public class PartyService {
 	}
 
 	@Transactional
-	public void startDelivery(Long partyId, UserDTO userDTO) {
+	public void updateParty(Long partyId, PartyUpdateRequestDTO requestDTO, UserDTO userDTO) {
 		Party party = getPartyEntity(partyId);
 		User user = userDTO.toEntity();
 
 		checkHostUser(party, user);
 
-		party.startDelivery();
-	}
-
-	@Transactional
-	public void finishDelivery(Long partyId, UserDTO userDTO) {
-		Party party = getPartyEntity(partyId);
-		User user = userDTO.toEntity();
-
-		checkHostUser(party, user);
-
-		party.finishDelivery();
-	}
-
-	@Transactional
-	public void finishParty(Long partyId, UserDTO userDTO) {
-		Party party = getPartyEntity(partyId);
-		User user = userDTO.toEntity();
-
-		checkHostUser(party, user);
-
-		party.finishParty();
-	}
-
-	@Transactional
-	public void cancelParty(Long partyId, UserDTO userDTO) {
-		Party party = getPartyEntity(partyId);
-		User user = userDTO.toEntity();
-
-		checkHostUser(party, user);
-
-		party.cancelParty();
+		if (requestDTO.getStatus() != null) {
+			PartyStatus status = requestDTO.getStatus();
+			if (status == PartyStatus.DELIVERING) {
+				party.startDelivery();
+			} else if (status == PartyStatus.DELIVERED) {
+				party.finishDelivery();
+			} else if (status == PartyStatus.FINISHED) {
+				party.finishParty();
+			} else if (status == PartyStatus.CANCELED) {
+				party.cancelParty();
+			}
+		}
 	}
 
 	private Party getPartyEntity(Long partyId) {

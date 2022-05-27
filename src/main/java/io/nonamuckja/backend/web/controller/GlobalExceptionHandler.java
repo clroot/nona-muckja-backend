@@ -53,6 +53,7 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ErrorDTO> handleException(Exception exception) {
 		log.error("Exception: {}", exception.getMessage());
+		log.error("StackTrace: {}", (Object)exception.getStackTrace());
 
 		ErrorDTO errorDTO = ErrorDTO.builder()
 			.message(exception.getMessage())
