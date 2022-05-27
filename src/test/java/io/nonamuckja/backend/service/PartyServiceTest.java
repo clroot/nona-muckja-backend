@@ -16,6 +16,7 @@ import io.nonamuckja.backend.domain.user.User;
 import io.nonamuckja.backend.exception.PartyJoinException;
 import io.nonamuckja.backend.exception.PartyLeaveException;
 import io.nonamuckja.backend.web.dto.PartyRegisterFormDTO;
+import io.nonamuckja.backend.web.dto.PartyUpdateRequestDTO;
 import io.nonamuckja.backend.web.dto.UserDTO;
 
 @SpringBootTest
@@ -129,14 +130,17 @@ class PartyServiceTest {
 		User notHostUser = testUtils.createUser();
 		Party party = testUtils.createParty(hostUser, 2L);
 		Long partyId = party.getId();
+		PartyUpdateRequestDTO requestDTO = PartyUpdateRequestDTO.builder()
+			.status(PartyStatus.DELIVERING)
+			.build();
 
 		//when
-		partyService.startDelivery(partyId, UserDTO.fromEntity(hostUser));
+		partyService.updateParty(partyId, requestDTO, UserDTO.fromEntity(hostUser));
 
 		//then
 		assertEquals(PartyStatus.DELIVERING, party.getStatus());
 		assertThrows(IllegalStateException.class,
-			() -> partyService.startDelivery(partyId, UserDTO.fromEntity(notHostUser)));
+			() -> partyService.updateParty(partyId, requestDTO, UserDTO.fromEntity(notHostUser)));
 	}
 
 	@Test
@@ -148,13 +152,19 @@ class PartyServiceTest {
 		Party party = testUtils.createParty(hostUser, 2L);
 		Long partyId = party.getId();
 
+		PartyUpdateRequestDTO requestDTO = PartyUpdateRequestDTO.builder()
+			.status(PartyStatus.DELIVERED)
+			.build();
+
+		party.startDelivery();
+
 		//when
-		partyService.finishDelivery(partyId, UserDTO.fromEntity(hostUser));
+		partyService.updateParty(partyId, requestDTO, UserDTO.fromEntity(hostUser));
 
 		//then
 		assertEquals(PartyStatus.DELIVERED, party.getStatus());
 		assertThrows(IllegalStateException.class,
-			() -> partyService.finishDelivery(partyId, UserDTO.fromEntity(notHostUser)));
+			() -> partyService.updateParty(partyId, requestDTO, UserDTO.fromEntity(notHostUser)));
 	}
 
 	@Test
@@ -166,13 +176,20 @@ class PartyServiceTest {
 		Party party = testUtils.createParty(hostUser, 2L);
 		Long partyId = party.getId();
 
+		PartyUpdateRequestDTO requestDTO = PartyUpdateRequestDTO.builder()
+			.status(PartyStatus.FINISHED)
+			.build();
+
+		party.startDelivery();
+		party.finishDelivery();
+
 		//when
-		partyService.finishParty(partyId, UserDTO.fromEntity(hostUser));
+		partyService.updateParty(partyId, requestDTO, UserDTO.fromEntity(hostUser));
 
 		//then
 		assertEquals(PartyStatus.FINISHED, party.getStatus());
 		assertThrows(IllegalStateException.class,
-			() -> partyService.finishParty(partyId, UserDTO.fromEntity(notHostUser)));
+			() -> partyService.updateParty(partyId, requestDTO, UserDTO.fromEntity(notHostUser)));
 	}
 
 	@Test
@@ -183,13 +200,16 @@ class PartyServiceTest {
 		User notHostUser = testUtils.createUser();
 		Party party = testUtils.createParty(hostUser, 2L);
 		Long partyId = party.getId();
+		PartyUpdateRequestDTO requestDTO = PartyUpdateRequestDTO.builder()
+			.status(PartyStatus.CANCELED)
+			.build();
 
 		//when
-		partyService.cancelParty(partyId, UserDTO.fromEntity(hostUser));
+		partyService.updateParty(partyId, requestDTO, UserDTO.fromEntity(hostUser));
 
 		//then
 		assertEquals(PartyStatus.CANCELED, party.getStatus());
 		assertThrows(IllegalStateException.class,
-			() -> partyService.cancelParty(partyId, UserDTO.fromEntity(notHostUser)));
+			() -> partyService.updateParty(partyId, requestDTO, UserDTO.fromEntity(notHostUser)));
 	}
 }

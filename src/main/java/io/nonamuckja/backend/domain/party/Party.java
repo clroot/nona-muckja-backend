@@ -18,9 +18,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.springframework.http.HttpStatus;
+
 import io.nonamuckja.backend.domain.Address;
 import io.nonamuckja.backend.domain.BaseTimeEntity;
 import io.nonamuckja.backend.domain.user.User;
+import io.nonamuckja.backend.exception.PartyTransactionException;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -69,18 +72,30 @@ public class Party extends BaseTimeEntity {
 	}
 
 	public void startDelivery() {
+		if (status != PartyStatus.OPEN) {
+			throw new PartyTransactionException("배달 정보를 변경할 수 없는 파티입니다.", HttpStatus.BAD_REQUEST);
+		}
 		status = PartyStatus.DELIVERING;
 	}
 
 	public void finishDelivery() {
+		if (status != PartyStatus.DELIVERING) {
+			throw new PartyTransactionException("파티의 음식이 배송 중이 아닙니다.", HttpStatus.BAD_REQUEST);
+		}
 		status = PartyStatus.DELIVERED;
 	}
 
 	public void finishParty() {
+		if (status != PartyStatus.DELIVERED) {
+			throw new PartyTransactionException("파티 음식의 배달이 완료되지 않았습니다.", HttpStatus.BAD_REQUEST);
+		}
 		status = PartyStatus.FINISHED;
 	}
 
 	public void cancelParty() {
+		if (status != PartyStatus.OPEN) {
+			throw new PartyTransactionException("파티를 취소할 수 없습니다.", HttpStatus.BAD_REQUEST);
+		}
 		status = PartyStatus.CANCELED;
 	}
 }

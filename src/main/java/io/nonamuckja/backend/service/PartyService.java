@@ -13,6 +13,7 @@ import io.nonamuckja.backend.exception.PartyJoinException;
 import io.nonamuckja.backend.exception.PartyLeaveException;
 import io.nonamuckja.backend.exception.PartyNotFoundException;
 import io.nonamuckja.backend.web.dto.PartyRegisterFormDTO;
+import io.nonamuckja.backend.web.dto.PartyUpdateRequestDTO;
 import io.nonamuckja.backend.web.dto.UserDTO;
 import lombok.RequiredArgsConstructor;
 
@@ -60,43 +61,24 @@ public class PartyService {
 	}
 
 	@Transactional
-	public void startDelivery(Long partyId, UserDTO userDTO) {
+	public void updateParty(Long partyId, PartyUpdateRequestDTO requestDTO, UserDTO userDTO) {
 		Party party = getPartyEntity(partyId);
 		User user = userDTO.toEntity();
 
 		checkHostUser(party, user);
 
-		party.startDelivery();
-	}
-
-	@Transactional
-	public void finishDelivery(Long partyId, UserDTO userDTO) {
-		Party party = getPartyEntity(partyId);
-		User user = userDTO.toEntity();
-
-		checkHostUser(party, user);
-
-		party.finishDelivery();
-	}
-
-	@Transactional
-	public void finishParty(Long partyId, UserDTO userDTO) {
-		Party party = getPartyEntity(partyId);
-		User user = userDTO.toEntity();
-
-		checkHostUser(party, user);
-
-		party.finishParty();
-	}
-
-	@Transactional
-	public void cancelParty(Long partyId, UserDTO userDTO) {
-		Party party = getPartyEntity(partyId);
-		User user = userDTO.toEntity();
-
-		checkHostUser(party, user);
-
-		party.cancelParty();
+		if (requestDTO.getStatus() != null) {
+			PartyStatus status = requestDTO.getStatus();
+			if (status == PartyStatus.DELIVERING) {
+				party.startDelivery();
+			} else if (status == PartyStatus.DELIVERED) {
+				party.finishDelivery();
+			} else if (status == PartyStatus.FINISHED) {
+				party.finishParty();
+			} else if (status == PartyStatus.CANCELED) {
+				party.cancelParty();
+			}
+		}
 	}
 
 	private Party getPartyEntity(Long partyId) {
