@@ -1,13 +1,10 @@
 package io.nonamuckja.backend.web.dto;
 
-
-
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-
+import java.util.Set;
 
 import io.nonamuckja.backend.domain.Address;
 import io.nonamuckja.backend.domain.user.User;
+import io.nonamuckja.backend.domain.user.UserRole;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,6 +23,8 @@ public class UserDTO {
 
 	private Address address;
 
+	private Set<UserRole> roles;
+
 	public static UserDTO fromEntity(User user) {
 		UserDTO dto = new UserDTO();
 
@@ -33,6 +32,7 @@ public class UserDTO {
 		dto.username = user.getUsername();
 		dto.email = user.getEmail();
 		dto.address = user.getAddress();
+		dto.roles = user.getRoles();
 
 		return dto;
 	}
@@ -43,6 +43,7 @@ public class UserDTO {
 			.username(username)
 			.email(email)
 			.address(address)
+			.roles(roles)
 			.build();
 	}
 }
