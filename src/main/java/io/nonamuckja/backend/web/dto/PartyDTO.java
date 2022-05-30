@@ -1,5 +1,6 @@
 package io.nonamuckja.backend.web.dto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,6 +27,7 @@ public class PartyDTO {
 	private Long currentMemberCount;
 	private PartyStatus status;
 	private List<UserDTO> members;
+	private LocalDateTime partyTime;
 
 	public static PartyDTO fromEntity(Party party) {
 		return PartyDTO.builder()
@@ -38,6 +40,7 @@ public class PartyDTO {
 			.members(party.getMembers().stream()
 				.map(partyUser -> UserDTO.fromEntity(partyUser.getUser()))
 				.collect(Collectors.toList()))
+			.partyTime(party.getPartyTime())
 			.build();
 	}
 
@@ -47,6 +50,7 @@ public class PartyDTO {
 			.host(host.toEntity())
 			.address(address)
 			.limitMemberCount(limitMemberCount)
+			.partyTime(partyTime)
 			.status(status)
 			.build();
 	}
