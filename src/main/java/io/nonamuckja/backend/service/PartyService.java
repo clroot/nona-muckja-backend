@@ -1,5 +1,6 @@
 package io.nonamuckja.backend.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -71,11 +72,13 @@ public class PartyService {
 	public Long createParty(PartyRegisterFormDTO createFormDTO, UserDTO userDTO) {
 		Address partyAddress = createFormDTO.getAddress();
 		Long limitMemberCount = createFormDTO.getLimitMemberCount();
+		LocalDateTime partyTime = createFormDTO.getPartyTime();
 
 		Party party = Party.builder()
 			.address(partyAddress)
 			.host(userDTO.toEntity())
 			.limitMemberCount(limitMemberCount)
+			.partyTime(partyTime)
 			.status(PartyStatus.OPEN)
 			.build();
 
