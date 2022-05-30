@@ -1,6 +1,6 @@
 package io.nonamuckja.backend.web.dto;
 
-import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
 
 import org.hibernate.validator.constraints.Range;
 
@@ -20,6 +20,7 @@ import lombok.Setter;
 public class PartyRegisterFormDTO {
 
 	private Address address;
-	@Range(min=1,max=10)
+	@Range(min = 1, max = 10)
 	private Long limitMemberCount;
+	private LocalDateTime partyTime;
 }
