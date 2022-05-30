@@ -1,7 +1,9 @@
 package io.nonamuckja.backend.domain.party;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
@@ -51,6 +53,8 @@ public class Party extends BaseTimeEntity {
 
 	private Long limitMemberCount;
 
+	private LocalDateTime partyTime;
+
 	@Enumerated(EnumType.STRING)
 	@Builder.Default
 	private PartyStatus status = PartyStatus.OPEN;
@@ -61,6 +65,9 @@ public class Party extends BaseTimeEntity {
 
 	/*=====BUSINESS METHODS=====*/
 	public void joinMember(User member) {
+		if (isMemberOfParty(member)) {
+			throw new PartyTransactionException("이미 참여중인 파티입니다.", HttpStatus.BAD_REQUEST);
+		}
 		members.add(PartyUser.builder()
 			.party(this)
 			.user(member)
@@ -97,5 +104,10 @@ public class Party extends BaseTimeEntity {
 			throw new PartyTransactionException("파티를 취소할 수 없습니다.", HttpStatus.BAD_REQUEST);
 		}
 		status = PartyStatus.CANCELED;
+	}
+
+	private boolean isMemberOfParty(User user) {
+		return members.stream()
+			.anyMatch(partyUser -> Objects.equals(partyUser.getUser().getId(), user.getId()));
 	}
 }
