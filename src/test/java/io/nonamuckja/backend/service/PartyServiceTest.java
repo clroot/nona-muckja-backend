@@ -13,8 +13,7 @@ import io.nonamuckja.backend.domain.party.Party;
 import io.nonamuckja.backend.domain.party.PartyRepository;
 import io.nonamuckja.backend.domain.party.PartyStatus;
 import io.nonamuckja.backend.domain.user.User;
-import io.nonamuckja.backend.exception.PartyJoinException;
-import io.nonamuckja.backend.exception.PartyLeaveException;
+import io.nonamuckja.backend.exception.PartyTransactionException;
 import io.nonamuckja.backend.web.dto.PartyRegisterFormDTO;
 import io.nonamuckja.backend.web.dto.PartyUpdateRequestDTO;
 import io.nonamuckja.backend.web.dto.UserDTO;
@@ -84,9 +83,9 @@ class PartyServiceTest {
 		partyService.joinMember(party.getId(), UserDTO.fromEntity(joinUser1));
 
 		//then
-		assertThrows(PartyJoinException.class,
+		assertThrows(PartyTransactionException.class,
 			() -> partyService.joinMember(party.getId(), UserDTO.fromEntity(joinUser1)));
-		assertThrows(PartyJoinException.class,
+		assertThrows(PartyTransactionException.class,
 			() -> partyService.joinMember(party.getId(), UserDTO.fromEntity(joinUser2)));
 	}
 
@@ -118,7 +117,7 @@ class PartyServiceTest {
 		Party party = testUtils.createParty(hostUser, 2L);
 
 		//when & then
-		assertThrows(PartyLeaveException.class,
+		assertThrows(PartyTransactionException.class,
 			() -> partyService.leaveMember(party.getId(), UserDTO.fromEntity(notJoinUser)));
 	}
 
