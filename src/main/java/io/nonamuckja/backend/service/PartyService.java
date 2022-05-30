@@ -43,6 +43,11 @@ public class PartyService {
 			parties.getTotalElements());
 	}
 
+	public PartyDTO findById(Long partyId) {
+		var party = getPartyEntity(partyId);
+		return PartyDTO.fromEntity(party);
+	}
+
 	public Page<PartyDTO> search(PartySearchRequestDTO searchRequestDTO, Pageable pageable) {
 		var clientCoordinate = searchRequestDTO.getClientLocation();
 		var radius = searchRequestDTO.getRadius();

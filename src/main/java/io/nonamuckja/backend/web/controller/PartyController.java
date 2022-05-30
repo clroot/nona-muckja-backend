@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.nonamuckja.backend.domain.party.Party;
-import io.nonamuckja.backend.domain.party.PartyRepository;
 import io.nonamuckja.backend.security.AuthUserDTO;
 import io.nonamuckja.backend.security.CheckLoginUser;
 import io.nonamuckja.backend.service.PartyService;
@@ -32,7 +30,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class PartyController {
 	private final PartyService partyService;
-	private final PartyRepository partyRepository;
 
 	@GetMapping
 	public ResponseEntity<Page<PartyDTO>> list(@PageableDefault Pageable pageable) {
@@ -46,9 +43,7 @@ public class PartyController {
 		@RequestBody PartySearchRequestDTO searchRequestDTO,
 		@PageableDefault Pageable pageable) {
 		log.info("Party Search Request received: {}, pageable: {}", searchRequestDTO, pageable);
-
 		Page<PartyDTO> partyPage = partyService.search(searchRequestDTO, pageable);
-
 		log.info("Party Search Response: {}", partyPage);
 
 		return ResponseEntity.ok(partyPage);
@@ -62,37 +57,21 @@ public class PartyController {
 		log.info("Party registration request received: {}", registerFormDTO);
 
 		Long registeredId = partyService.createParty(registerFormDTO, userDTO);
-		Party registeredParty = partyRepository.findById(registeredId).orElseThrow();
+		PartyDTO registeredParty = partyService.findById(registeredId);
 
 		log.info("Party registration successful: {}", registeredParty);
 
-		PartyDTO registeredPartyDTO = PartyDTO.fromEntity(registeredParty);
-
-		return new ResponseEntity<>(registeredPartyDTO, HttpStatus.CREATED);
+		return new ResponseEntity<>(registeredParty, HttpStatus.CREATED);
 	}
 
-	@PostMapping("/{id}/join")
+	@GetMapping("/{id}")
 	@CheckLoginUser
-	public ResponseEntity<?> joinParty(@PathVariable("id") Long partyId, @AuthUserDTO UserDTO userDTO) {
-		log.info("Party join request received: partyId={}, userDTO={}", partyId, userDTO);
+	public ResponseEntity<PartyDTO> getParty(@PathVariable("id") Long partyId) {
+		log.info("Party info inquire request received: {}", partyId);
+		PartyDTO partyDTO = partyService.findById(partyId);
+		log.info("Party info inquire successful: {}", partyDTO);
 
-		partyService.joinMember(partyId, userDTO);
-
-		log.info("Party join successful: partyId={}, userDTO={}", partyId, userDTO);
-
-		return new ResponseEntity<>(HttpStatus.OK);
-	}
-
-	@PostMapping("/{id}/leave")
-	@CheckLoginUser
-	public ResponseEntity<?> leaveParty(@PathVariable("id") Long partyId, @AuthUserDTO UserDTO userDTO) {
-		log.info("Party leave request received: partyId={}, userDTO={}", partyId, userDTO);
-
-		partyService.leaveMember(partyId, userDTO);
-
-		log.info("Party leave successful: partyId={}, userDTO={}", partyId, userDTO);
-
-		return new ResponseEntity<>(HttpStatus.OK);
+		return new ResponseEntity<>(partyDTO, HttpStatus.OK);
 	}
 
 	@PatchMapping("/{id}")
@@ -102,10 +81,28 @@ public class PartyController {
 		@RequestBody PartyUpdateRequestDTO requestDTO,
 		@AuthUserDTO UserDTO userDTO) {
 		log.info("Party update request received: partyId={}, requestDTO={}, userDTO={}", partyId, requestDTO, userDTO);
-
 		partyService.updateParty(partyId, requestDTO, userDTO);
-
 		log.info("Party update successful: partyId={}, requestDTO={}, userDTO={}", partyId, requestDTO, userDTO);
+
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
+	@PostMapping("/{id}/join")
+	@CheckLoginUser
+	public ResponseEntity<?> joinParty(@PathVariable("id") Long partyId, @AuthUserDTO UserDTO userDTO) {
+		log.info("Party join request received: partyId={}, userDTO={}", partyId, userDTO);
+		partyService.joinMember(partyId, userDTO);
+		log.info("Party join successful: partyId={}, userDTO={}", partyId, userDTO);
+
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
+	@PostMapping("/{id}/leave")
+	@CheckLoginUser
+	public ResponseEntity<?> leaveParty(@PathVariable("id") Long partyId, @AuthUserDTO UserDTO userDTO) {
+		log.info("Party leave request received: partyId={}, userDTO={}", partyId, userDTO);
+		partyService.leaveMember(partyId, userDTO);
+		log.info("Party leave successful: partyId={}, userDTO={}", partyId, userDTO);
 
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
