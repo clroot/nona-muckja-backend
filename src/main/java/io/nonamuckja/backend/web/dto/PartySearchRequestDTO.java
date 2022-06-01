@@ -1,6 +1,10 @@
 package io.nonamuckja.backend.web.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import io.nonamuckja.backend.domain.Coordinate;
+import io.nonamuckja.backend.domain.party.FoodCategory;
 import io.nonamuckja.backend.domain.party.PartyStatus;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.AccessLevel;
@@ -25,4 +29,7 @@ public class PartySearchRequestDTO {
 	@Builder.Default
 	@Parameter(description = "검색하고자 하는 파티 상태")
 	private PartyStatus status = PartyStatus.OPEN;
+
+	@Parameter(description = "클라이언트가 선택한 음식 카테고리")
+	private List<FoodCategory> foodCategories;
 }

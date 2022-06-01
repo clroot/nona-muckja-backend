@@ -1,5 +1,8 @@
 package io.nonamuckja.backend.domain.party;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import io.nonamuckja.backend.domain.Coordinate;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -18,4 +21,7 @@ public class PartySearch {
 	private Coordinate to;
 	@Builder.Default
 	private PartyStatus status = PartyStatus.OPEN;
+	@Builder.Default
+	private List<FoodCategory> foodCategories = new ArrayList<>();
+
 }
