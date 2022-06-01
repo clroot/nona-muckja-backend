@@ -24,10 +24,16 @@ public class PartyDTO {
 	private UserDTO host;
 	private Address address;
 	private Long limitMemberCount;
+
 	private Long currentMemberCount;
 	private PartyStatus status;
+
 	private List<UserDTO> members;
 	private LocalDateTime partyTime;
+
+	private String title;
+
+	private String description;
 
 	public static PartyDTO fromEntity(Party party) {
 		return PartyDTO.builder()
@@ -41,6 +47,8 @@ public class PartyDTO {
 				.map(partyUser -> UserDTO.fromEntity(partyUser.getUser()))
 				.collect(Collectors.toList()))
 			.partyTime(party.getPartyTime())
+			.title(party.getTitle())
+			.description(party.getDescription())
 			.build();
 	}
 
@@ -52,6 +60,8 @@ public class PartyDTO {
 			.limitMemberCount(limitMemberCount)
 			.partyTime(partyTime)
 			.status(status)
+			.title(title)
+			.description(description)
 			.build();
 	}
 }

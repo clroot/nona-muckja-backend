@@ -66,12 +66,14 @@ public class PartyService {
 	}
 
 	@Transactional
-	public Long createParty(PartyRegisterFormDTO createFormDTO, UserDTO userDTO) {
-		Address partyAddress = createFormDTO.getAddress();
-		Long limitMemberCount = createFormDTO.getLimitMemberCount();
-		LocalDateTime partyTime = createFormDTO.getPartyTime();
+	public Long createParty(PartyRegisterFormDTO formDTO, UserDTO userDTO) {
+		Address partyAddress = formDTO.getAddress();
+		Long limitMemberCount = formDTO.getLimitMemberCount();
+		LocalDateTime partyTime = formDTO.getPartyTime();
 
 		Party party = Party.builder()
+			.title(formDTO.getTitle())
+			.description(formDTO.getDescription())
 			.address(partyAddress)
 			.host(userDTO.toEntity())
 			.limitMemberCount(limitMemberCount)

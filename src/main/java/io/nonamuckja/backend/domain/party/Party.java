@@ -61,6 +61,10 @@ public class Party extends BaseTimeEntity {
 	@Builder.Default
 	private List<PartyUser> members = new ArrayList<>();
 
+	private String title;
+
+	private String description;
+
 	/*=====BUSINESS METHODS=====*/
 	public void joinMember(User member) {
 		if (status != PartyStatus.OPEN) {

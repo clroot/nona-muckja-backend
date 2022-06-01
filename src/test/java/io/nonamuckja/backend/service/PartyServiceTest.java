@@ -35,8 +35,13 @@ class PartyServiceTest {
 	@DisplayName("파티 생성 테스트")
 	public void testCreateParty() {
 		//given
+		String title = "테스트 파티";
+		String description = "테스트 파티 설명";
+
 		User testUser = testUtils.createUser();
 		PartyRegisterFormDTO createFormDTO = PartyRegisterFormDTO.builder()
+			.title(title)
+			.description(description)
 			.address(testUtils.createAddress())
 			.limitMemberCount(10L)
 			.build();
@@ -46,6 +51,9 @@ class PartyServiceTest {
 
 		//then
 		Party createdParty = partyRepository.findById(createdPartyId).orElseThrow();
+
+		assertEquals(title, createdParty.getTitle());
+		assertEquals(description, createdParty.getDescription());
 		assertEquals(1, createdParty.getMembers().size());
 		assertEquals(createFormDTO.getAddress().getRoadAddress(), createdParty.getAddress().getRoadAddress());
 		assertEquals(createFormDTO.getLimitMemberCount(), createdParty.getLimitMemberCount());

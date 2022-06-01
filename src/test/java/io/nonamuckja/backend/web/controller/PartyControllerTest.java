@@ -119,10 +119,14 @@ class PartyControllerTest {
 		//given
 		String url = "/api/v1/party";
 
+		String title = "테스트 파티";
+		String description = "테스트 파티 설명";
 		Address address = testUtils.createAddress();
 		Long limitMemberCount = 10L;
 
 		PartyRegisterFormDTO registerFormDTO = PartyRegisterFormDTO.builder()
+			.title(title)
+			.description(description)
 			.address(address)
 			.limitMemberCount(limitMemberCount)
 			.build();
@@ -134,13 +138,14 @@ class PartyControllerTest {
 			.andExpect(status().isCreated())
 			.andExpect(jsonPath("$.id").isNumber())
 			.andExpect(jsonPath("$.host.id").isNumber())
+			.andExpect(jsonPath("$.title").value(title))
+			.andExpect(jsonPath("$.description").value(description))
 			.andExpect(jsonPath("$.address").exists())
 			.andExpect(jsonPath("$.address.roadAddress").value(address.getRoadAddress()))
 			.andExpect(jsonPath("$.limitMemberCount").value(limitMemberCount))
 			.andExpect(jsonPath("$.currentMemberCount").value(1L))
 			.andExpect(jsonPath("$.status").value(PartyStatus.OPEN.name()))
-			.andExpect(jsonPath("$.members").isArray())
-			.andReturn().getResponse();
+			.andExpect(jsonPath("$.members").isArray());
 	}
 
 	@Test
