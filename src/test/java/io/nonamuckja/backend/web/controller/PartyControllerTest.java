@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.nonamuckja.backend.TestUtils;
 import io.nonamuckja.backend.domain.Address;
 import io.nonamuckja.backend.domain.Coordinate;
+import io.nonamuckja.backend.domain.party.FoodCategory;
 import io.nonamuckja.backend.domain.party.Party;
 import io.nonamuckja.backend.domain.party.PartyRepository;
 import io.nonamuckja.backend.domain.party.PartyStatus;
@@ -129,6 +130,7 @@ class PartyControllerTest {
 			.description(description)
 			.address(address)
 			.limitMemberCount(limitMemberCount)
+			.foodCategory(FoodCategory.ASIAN_FOOD)
 			.build();
 
 		//when & then
@@ -145,7 +147,8 @@ class PartyControllerTest {
 			.andExpect(jsonPath("$.limitMemberCount").value(limitMemberCount))
 			.andExpect(jsonPath("$.currentMemberCount").value(1L))
 			.andExpect(jsonPath("$.status").value(PartyStatus.OPEN.name()))
-			.andExpect(jsonPath("$.members").isArray());
+			.andExpect(jsonPath("$.members").isArray())
+			.andExpect(jsonPath("$.foodCategory").value(FoodCategory.ASIAN_FOOD.name()));
 	}
 
 	@Test

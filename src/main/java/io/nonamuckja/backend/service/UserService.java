@@ -45,7 +45,6 @@ public class UserService {
 		if (dto.getAddress() != null) {
 			user.updateAddress(dto.getAddress());
 		}
-
 	}
 
 	private User getUserEntity(Long userId) {

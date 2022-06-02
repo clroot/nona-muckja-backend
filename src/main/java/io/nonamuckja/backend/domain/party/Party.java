@@ -57,6 +57,9 @@ public class Party extends BaseTimeEntity {
 	@Builder.Default
 	private PartyStatus status = PartyStatus.OPEN;
 
+	@Enumerated(EnumType.STRING)
+	private FoodCategory foodCategory;
+
 	@OneToMany(mappedBy = "party", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@Builder.Default
 	private List<PartyUser> members = new ArrayList<>();
@@ -110,7 +113,7 @@ public class Party extends BaseTimeEntity {
 		}
 		status = PartyStatus.FINISHED;
 	}
-
+// 카테고리 in (리스트 넣으면) 그중에 해당되는 다 웨어 조건에 걸리게끔
 	public void cancelParty() {
 		if (status != PartyStatus.OPEN) {
 			throw new PartyTransactionException("파티를 취소할 수 없습니다.");

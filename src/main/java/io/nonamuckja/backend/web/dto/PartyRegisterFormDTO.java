@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Range;
 
 import io.nonamuckja.backend.domain.Address;
+import io.nonamuckja.backend.domain.party.FoodCategory;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,4 +36,7 @@ public class PartyRegisterFormDTO {
 
 	@NotNull
 	private LocalDateTime partyTime;
+
+	@NotNull
+	private FoodCategory foodCategory;
 }

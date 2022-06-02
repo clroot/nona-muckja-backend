@@ -55,6 +55,7 @@ public class PartyService {
 			.from(vertex.getLeft())
 			.to(vertex.getRight())
 			.status(searchRequestDTO.getStatus())
+			.foodCategories(searchRequestDTO.getFoodCategories())
 			.build();
 
 		Page<Party> page = partyRepository.search(partySearch, pageable);
@@ -79,6 +80,7 @@ public class PartyService {
 			.limitMemberCount(limitMemberCount)
 			.partyTime(partyTime)
 			.status(PartyStatus.OPEN)
+			.foodCategory(formDTO.getFoodCategory())
 			.build();
 
 		party.joinMember(userDTO.toEntity());

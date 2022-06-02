@@ -52,6 +52,10 @@ public class CustomPartyRepositoryImpl extends QuerydslRepositorySupport impleme
 			query.offset(pageable.getOffset());
 		}
 
+		if (partySearch.getFoodCategories().size() > 0) {
+			query.where(party.foodCategory.in(partySearch.getFoodCategories()));
+		}
+
 		return query.orderBy(party.id.desc());
 	}
 }
