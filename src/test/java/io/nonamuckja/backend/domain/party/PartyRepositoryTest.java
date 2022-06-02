@@ -65,13 +65,16 @@ class PartyRepositoryTest {
 		PartySearch search = PartySearch.builder()
 			.from(vertex.getLeft())
 			.to(vertex.getRight())
+			.foodCategories(List.of(FoodCategory.ASIAN_FOOD, FoodCategory.CHINESE))
 			.build();
 
 		// when
 		List<Party> partyList = partyRepository.search(search);
 
 		// then
-		partyList.forEach(party -> assertTrue(center.getDistanceWith(party.getAddress().getCoordinate()) <= radius));
-		assertEquals(20, partyList.size());
+		partyList.forEach(party -> {
+			assertTrue(center.getDistanceWith(party.getAddress().getCoordinate()) <= radius);
+			assertTrue(search.getFoodCategories().contains(party.getFoodCategory()));
+		});
 	}
 }
