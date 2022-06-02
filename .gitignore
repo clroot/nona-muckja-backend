@@ -130,3 +130,6 @@ fabric.properties
 src/main/resources/application-datasource.yml
 src/main/resources/application-secret.yml
 src/main/resources/application-oauth-secret.yml
+
+# Thumbnail cache
+**/.DS_Store
