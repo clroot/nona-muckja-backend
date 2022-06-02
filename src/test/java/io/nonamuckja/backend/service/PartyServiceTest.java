@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import io.nonamuckja.backend.TestUtils;
+import io.nonamuckja.backend.domain.party.FoodCategory;
 import io.nonamuckja.backend.domain.party.Party;
 import io.nonamuckja.backend.domain.party.PartyRepository;
 import io.nonamuckja.backend.domain.party.PartyStatus;
@@ -44,6 +45,7 @@ class PartyServiceTest {
 			.description(description)
 			.address(testUtils.createAddress())
 			.limitMemberCount(10L)
+			.foodCategory(FoodCategory.ASIAN_FOOD)
 			.build();
 
 		//when
@@ -59,6 +61,7 @@ class PartyServiceTest {
 		assertEquals(createFormDTO.getLimitMemberCount(), createdParty.getLimitMemberCount());
 		assertEquals(testUser.getId(), createdParty.getHost().getId());
 		assertEquals(PartyStatus.OPEN, createdParty.getStatus());
+		assertEquals(FoodCategory.ASIAN_FOOD, createdParty.getFoodCategory());
 	}
 
 	@Test

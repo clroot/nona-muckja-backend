@@ -8,6 +8,7 @@ import com.github.javafaker.Faker;
 
 import io.nonamuckja.backend.domain.Address;
 import io.nonamuckja.backend.domain.Coordinate;
+import io.nonamuckja.backend.domain.party.FoodCategory;
 import io.nonamuckja.backend.domain.party.Party;
 import io.nonamuckja.backend.domain.party.PartyRepository;
 import io.nonamuckja.backend.domain.user.User;
@@ -65,6 +66,7 @@ public class TestUtils {
 		PartyRegisterFormDTO partyRegisterDTO = PartyRegisterFormDTO.builder()
 			.address(address)
 			.limitMemberCount(limitMemberCount)
+			.foodCategory(getRandomFoodCategory())
 			.build();
 		UserDTO hostDTO = UserDTO.fromEntity(host);
 
@@ -109,5 +111,9 @@ public class TestUtils {
 			.longitude(Double.parseDouble(faker.address().longitude()))
 			.latitude(Double.parseDouble(faker.address().latitude()))
 			.build();
+	}
+
+	private FoodCategory getRandomFoodCategory() {
+		return FoodCategory.values()[(int)(Math.random() * FoodCategory.values().length)];
 	}
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import io.nonamuckja.backend.domain.Address;
+import io.nonamuckja.backend.domain.party.FoodCategory;
 import io.nonamuckja.backend.domain.party.Party;
 import io.nonamuckja.backend.domain.party.PartyStatus;
 import lombok.AccessLevel;
@@ -35,6 +36,8 @@ public class PartyDTO {
 
 	private String description;
 
+	private FoodCategory foodCategory;
+
 	public static PartyDTO fromEntity(Party party) {
 		return PartyDTO.builder()
 			.id(party.getId())
@@ -49,6 +52,7 @@ public class PartyDTO {
 			.partyTime(party.getPartyTime())
 			.title(party.getTitle())
 			.description(party.getDescription())
+			.foodCategory(party.getFoodCategory())
 			.build();
 	}
 
@@ -62,6 +66,7 @@ public class PartyDTO {
 			.status(status)
 			.title(title)
 			.description(description)
+			.foodCategory(foodCategory)
 			.build();
 	}
 }

@@ -80,6 +80,7 @@ public class PartyService {
 			.limitMemberCount(limitMemberCount)
 			.partyTime(partyTime)
 			.status(PartyStatus.OPEN)
+			.foodCategory(formDTO.getFoodCategory())
 			.build();
 
 		party.joinMember(userDTO.toEntity());
