@@ -1,6 +1,5 @@
 package io.nonamuckja.backend.service;
 
-<<<<<<< Updated upstream
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
@@ -46,7 +45,6 @@ public class UserService {
 		if (dto.getAddress() != null) {
 			user.updateAddress(dto.getAddress());
 		}
-
 	}
 
 	private User getUserEntity(Long userId) {
