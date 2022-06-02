@@ -9,8 +9,6 @@ import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport
 
 import com.querydsl.jpa.JPQLQuery;
 
-import io.nonamuckja.backend.exception.UserNotFoundException;
-
 public class CustomPartyRepositoryImpl extends QuerydslRepositorySupport implements CustomPartyRepository {
 
 	public CustomPartyRepositoryImpl() {
@@ -53,9 +51,11 @@ public class CustomPartyRepositoryImpl extends QuerydslRepositorySupport impleme
 			query.limit(pageable.getPageSize());
 			query.offset(pageable.getOffset());
 		}
-		if (partySearch.getFoodCategories()!=null){
+
+		if (partySearch.getFoodCategories().size() > 0) {
 			query.where(party.foodCategory.in(partySearch.getFoodCategories()));
 		}
+
 		return query.orderBy(party.id.desc());
 	}
 }

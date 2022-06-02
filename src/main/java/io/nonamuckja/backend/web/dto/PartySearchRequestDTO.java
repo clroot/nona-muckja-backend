@@ -26,10 +26,11 @@ public class PartySearchRequestDTO {
 	@Parameter(description = "클라이언트가 찾고자 하는 파티의 위치 반경")
 	private Double radius;
 
-	@Builder.Default
 	@Parameter(description = "검색하고자 하는 파티 상태")
+	@Builder.Default
 	private PartyStatus status = PartyStatus.OPEN;
 
 	@Parameter(description = "클라이언트가 선택한 음식 카테고리")
-	private List<FoodCategory> foodCategories;
+	@Builder.Default
+	private List<FoodCategory> foodCategories = new ArrayList<>();
 }
