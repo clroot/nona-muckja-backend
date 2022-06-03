@@ -13,5 +13,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TokenResponseDTO {
+	private Long userId;
 	private String accessToken;
 }

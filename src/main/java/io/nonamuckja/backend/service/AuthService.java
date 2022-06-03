@@ -20,6 +20,7 @@ import io.nonamuckja.backend.domain.user.UserRepository;
 import io.nonamuckja.backend.domain.user.UserRole;
 import io.nonamuckja.backend.exception.AuthException;
 import io.nonamuckja.backend.exception.UserDuplicateException;
+import io.nonamuckja.backend.security.UserDetailsAdapter;
 import io.nonamuckja.backend.security.jwt.JwtTokenUtils;
 import io.nonamuckja.backend.web.dto.TokenResponseDTO;
 import io.nonamuckja.backend.web.dto.UserLoginFormDTO;
@@ -51,6 +52,7 @@ public class AuthService {
 				String accessToken = jwtTokenUtils.generateToken(userDetails);
 				return TokenResponseDTO.builder()
 					.accessToken(accessToken)
+					.userId(((UserDetailsAdapter)userDetails).getUserDTO().getId())
 					.build();
 			} else {
 				throw new BadCredentialsException("Invalid username or password");
