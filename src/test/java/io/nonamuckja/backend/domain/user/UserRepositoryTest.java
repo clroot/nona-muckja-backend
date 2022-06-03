@@ -2,10 +2,14 @@ package io.nonamuckja.backend.domain.user;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.stream.IntStream;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
 import io.nonamuckja.backend.TestUtils;
@@ -92,5 +96,24 @@ class UserRepositoryTest {
 		//then
 		assertEquals(email, user.getEmail());
 		assertEquals(username, user.getUsername());
+	}
+
+	@Test
+	@DisplayName("findAll() 테스트")
+	public void testFindAll() {
+		//given
+		IntStream.range(0, 50).forEach(i -> {
+			testUtils.createUser();
+		});
+		Pageable pageable = PageRequest.of(0, 30);
+
+		//when
+		System.out.println("========== findAll query start. ==========");
+		var users = userRepository.findAll(pageable);
+		System.out.println("========== findAll query end. ==========");
+
+		//then
+		assertNotNull(users);
+		assertEquals(30, users.getSize());
 	}
 }

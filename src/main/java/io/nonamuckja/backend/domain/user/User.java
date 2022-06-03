@@ -56,7 +56,7 @@ public class User extends BaseTimeEntity {
 	@Builder.Default
 	private OAuthProvider social = OAuthProvider.LOCAL;
 
-	@ElementCollection(fetch = FetchType.LAZY)
+	@ElementCollection(fetch = FetchType.EAGER)
 	@Enumerated(EnumType.STRING)
 	@Builder.Default
 	private Set<UserRole> roles = new HashSet<>();
