@@ -1,5 +1,10 @@
 package io.nonamuckja.backend;
 
+import static java.util.concurrent.TimeUnit.*;
+
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -63,10 +68,12 @@ public class TestUtils {
 	}
 
 	public Party createParty(User host, Long limitMemberCount, Address address) {
+		Faker faker = new Faker();
 		PartyRegisterFormDTO partyRegisterDTO = PartyRegisterFormDTO.builder()
 			.address(address)
 			.limitMemberCount(limitMemberCount)
 			.foodCategory(getRandomFoodCategory())
+			.partyTime(getRandomFutureTime())
 			.build();
 		UserDTO hostDTO = UserDTO.fromEntity(host);
 
@@ -113,7 +120,24 @@ public class TestUtils {
 			.build();
 	}
 
-	private FoodCategory getRandomFoodCategory() {
+	public FoodCategory getRandomFoodCategory() {
 		return FoodCategory.values()[(int)(Math.random() * FoodCategory.values().length)];
+	}
+
+	public LocalDateTime getRandomFutureTime() {
+		Faker faker = new Faker();
+		return faker.date()
+			.future(7, DAYS)
+			.toInstant()
+			.atZone(ZoneId.systemDefault())
+			.toLocalDateTime();
+	}
+
+	public User getRandomUser() {
+		User user = userRepository.findAll().get((int)(Math.random() * userRepository.count()));
+		if (user == null) {
+			return createUser();
+		}
+		return user;
 	}
 }

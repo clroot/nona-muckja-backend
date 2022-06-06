@@ -39,13 +39,15 @@ class PartyServiceTest {
 		String title = "테스트 파티";
 		String description = "테스트 파티 설명";
 
-		User testUser = testUtils.createUser();
+		User testUser = testUtils.getRandomUser();
+		FoodCategory foodCategory = testUtils.getRandomFoodCategory();
 		PartyRegisterFormDTO createFormDTO = PartyRegisterFormDTO.builder()
 			.title(title)
 			.description(description)
 			.address(testUtils.createAddress())
 			.limitMemberCount(10L)
-			.foodCategory(FoodCategory.ASIAN_FOOD)
+			.foodCategory(foodCategory)
+			.partyTime(testUtils.getRandomFutureTime())
 			.build();
 
 		//when
@@ -61,7 +63,7 @@ class PartyServiceTest {
 		assertEquals(createFormDTO.getLimitMemberCount(), createdParty.getLimitMemberCount());
 		assertEquals(testUser.getId(), createdParty.getHost().getId());
 		assertEquals(PartyStatus.OPEN, createdParty.getStatus());
-		assertEquals(FoodCategory.ASIAN_FOOD, createdParty.getFoodCategory());
+		assertEquals(foodCategory, createdParty.getFoodCategory());
 	}
 
 	@Test
