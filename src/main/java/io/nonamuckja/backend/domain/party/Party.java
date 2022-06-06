@@ -74,7 +74,7 @@ public class Party extends BaseTimeEntity {
 			throw new PartyTransactionException("참여할 수 없는 파티입니다.");
 		} else if (limitMemberCount <= members.size()) {
 			throw new PartyTransactionException("파티 참여 인원이 제한수를 초과하였습니다.");
-		} else if (isMemberOfParty(member)) {
+		} else if (isJoinedUser(member)) {
 			throw new PartyTransactionException("이미 참여중인 파티입니다.");
 		}
 
@@ -87,7 +87,7 @@ public class Party extends BaseTimeEntity {
 	public void leaveMember(User member) {
 		if (status != PartyStatus.OPEN) {
 			throw new PartyTransactionException("주문이 완료되어 떠날 수 없는 파티입니다.");
-		} else if (!isMemberOfParty(member)) {
+		} else if (!isJoinedUser(member)) {
 			throw new PartyTransactionException("참여하지 않은 파티입니다.");
 		}
 		members.removeIf(m -> m.getUser().getId().equals(member.getId()));
@@ -113,7 +113,7 @@ public class Party extends BaseTimeEntity {
 		}
 		status = PartyStatus.FINISHED;
 	}
-// 카테고리 in (리스트 넣으면) 그중에 해당되는 다 웨어 조건에 걸리게끔
+
 	public void cancelParty() {
 		if (status != PartyStatus.OPEN) {
 			throw new PartyTransactionException("파티를 취소할 수 없습니다.");
@@ -121,7 +121,7 @@ public class Party extends BaseTimeEntity {
 		status = PartyStatus.CANCELED;
 	}
 
-	private boolean isMemberOfParty(User user) {
+	public boolean isJoinedUser(User user) {
 		return members.stream()
 			.anyMatch(partyUser -> Objects.equals(partyUser.getUser().getId(), user.getId()));
 	}
