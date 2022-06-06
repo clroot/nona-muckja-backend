@@ -140,4 +140,12 @@ public class TestUtils {
 		}
 		return user;
 	}
+
+	public Party getRandomParty() {
+		Party party = partyRepository.findAll().get((int)(Math.random() * partyRepository.count()));
+		if (party == null) {
+			return createParty(getRandomUser(), (long)(Math.random() * 10));
+		}
+		return party;
+	}
 }

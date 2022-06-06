@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.List;
 import java.util.stream.IntStream;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,7 +19,6 @@ import io.nonamuckja.backend.domain.Coordinate;
 import io.nonamuckja.backend.domain.user.User;
 
 @SpringBootTest
-@Transactional
 class PartyRepositoryTest {
 	@Autowired
 	PartyRepository partyRepository;
@@ -56,7 +56,13 @@ class PartyRepositoryTest {
 		});
 	}
 
+	@AfterEach
+	void tearDown() {
+		partyRepository.deleteAll();
+	}
+
 	@Test
+	@Transactional
 	@DisplayName("search() 테스트")
 	public void testSearch() {
 		// given
@@ -75,6 +81,28 @@ class PartyRepositoryTest {
 		partyList.forEach(party -> {
 			assertTrue(center.getDistanceWith(party.getAddress().getCoordinate()) <= radius);
 			assertTrue(search.getFoodCategories().contains(party.getFoodCategory()));
+		});
+	}
+
+	@Test
+	@Transactional
+	@DisplayName("getPartyByMember() 테스트")
+	public void testGetPartyByMember() {
+		//given
+		User user = testUtils.getRandomUser();
+		IntStream.range(0, 10).forEach(i -> {
+			Party party = testUtils.getRandomParty();
+			if (!party.isJoinedUser(user) && party.getMembers().size() < party.getLimitMemberCount()) {
+				party.joinMember(user);
+			}
+		});
+
+		//when
+		var partyList = partyRepository.getPartyByMember(user.getId());
+
+		//then
+		partyList.forEach(party -> {
+			assertTrue(party.isJoinedUser(user));
 		});
 	}
 }
