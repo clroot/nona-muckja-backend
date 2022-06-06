@@ -66,6 +66,17 @@ public class PartyService {
 		return new PageImpl<>(content, pageable, page.getTotalElements());
 	}
 
+	public Page<PartyDTO> getPartyByMember(Long userId, Pageable pageable) {
+		var parties = partyRepository.getPartyByMember(userId, pageable);
+		return new PageImpl<>(
+			parties.stream()
+				.map(PartyDTO::fromEntity)
+				.collect(Collectors.toList()),
+			pageable,
+			parties.getTotalElements()
+		);
+	}
+
 	@Transactional
 	public Long createParty(PartyRegisterFormDTO formDTO, UserDTO userDTO) {
 		Address partyAddress = formDTO.getAddress();

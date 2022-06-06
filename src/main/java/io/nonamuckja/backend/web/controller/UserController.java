@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 import io.nonamuckja.backend.domain.user.UserRole;
 import io.nonamuckja.backend.security.AuthUserDTO;
 import io.nonamuckja.backend.security.CheckLoginUser;
+import io.nonamuckja.backend.service.PartyService;
 import io.nonamuckja.backend.service.UserService;
+import io.nonamuckja.backend.web.dto.PartyDTO;
 import io.nonamuckja.backend.web.dto.ProfileUpdateFormDTO;
 import io.nonamuckja.backend.web.dto.UserDTO;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class UserController {
 	private final UserService userService;
+	private final PartyService partyService;
 
 	@GetMapping
 	@CheckLoginUser
@@ -56,6 +59,16 @@ public class UserController {
 		log.info("Profile inquire successful: UserID: {}", userId);
 
 		return new ResponseEntity<>(userDTO, HttpStatus.OK);
+	}
+
+	@GetMapping("/{id}/party")
+	@CheckLoginUser
+	public ResponseEntity<Page<PartyDTO>> getParty(@PathVariable("id") Long userId, Pageable pageable) {
+		log.info("Party inquire by member request receive: UserID: {}", userId);
+		var result = partyService.getPartyByMember(userId, pageable);
+		log.info("Party inquire by member successful: UserID: {}", userId);
+
+		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
 	@PatchMapping("/profile")
