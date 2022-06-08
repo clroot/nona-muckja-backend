@@ -17,6 +17,7 @@ import io.nonamuckja.backend.domain.party.Party;
 import io.nonamuckja.backend.domain.party.PartyRepository;
 import io.nonamuckja.backend.domain.party.PartySearch;
 import io.nonamuckja.backend.domain.party.PartyStatus;
+import io.nonamuckja.backend.domain.party.PartyUserRepository;
 import io.nonamuckja.backend.domain.user.User;
 import io.nonamuckja.backend.exception.PartyNotFoundException;
 import io.nonamuckja.backend.web.dto.PartyDTO;
@@ -31,6 +32,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PartyService {
 	private final PartyRepository partyRepository;
+	private final PartyUserRepository partyUserRepository;
 
 	public Page<PartyDTO> list(Pageable pageable) {
 		Pageable pageableWithSort = PageRequest.of(
@@ -119,6 +121,7 @@ public class PartyService {
 		User user = userDTO.toEntity();
 
 		party.leaveMember(user);
+		partyUserRepository.deleteByPartyIdAndUserId(partyId, user.getId());
 	}
 
 	@Transactional

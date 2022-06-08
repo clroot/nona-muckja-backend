@@ -24,6 +24,7 @@ import io.nonamuckja.backend.domain.Address;
 import io.nonamuckja.backend.domain.BaseTimeEntity;
 import io.nonamuckja.backend.domain.user.User;
 import io.nonamuckja.backend.exception.PartyTransactionException;
+import io.nonamuckja.backend.exception.UserNotFoundException;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -90,7 +91,12 @@ public class Party extends BaseTimeEntity {
 		} else if (!isJoinedUser(member)) {
 			throw new PartyTransactionException("참여하지 않은 파티입니다.");
 		}
-		members.removeIf(m -> m.getUser().getId().equals(member.getId()));
+
+		PartyUser partyUser = members.stream()
+			.filter(m -> m.getUser().getId().equals(member.getId()))
+			.findAny()
+			.orElseThrow(UserNotFoundException::new);
+		members.remove(partyUser);
 	}
 
 	public void startDelivery() {

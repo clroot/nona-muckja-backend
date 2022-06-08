@@ -13,6 +13,7 @@ import io.nonamuckja.backend.domain.party.FoodCategory;
 import io.nonamuckja.backend.domain.party.Party;
 import io.nonamuckja.backend.domain.party.PartyRepository;
 import io.nonamuckja.backend.domain.party.PartyStatus;
+import io.nonamuckja.backend.domain.party.PartyUserRepository;
 import io.nonamuckja.backend.domain.user.User;
 import io.nonamuckja.backend.exception.PartyTransactionException;
 import io.nonamuckja.backend.web.dto.PartyRegisterFormDTO;
@@ -28,6 +29,9 @@ class PartyServiceTest {
 
 	@Autowired
 	private PartyRepository partyRepository;
+
+	@Autowired
+	private PartyUserRepository partyUserRepository;
 
 	@Autowired
 	private TestUtils testUtils;
@@ -116,9 +120,12 @@ class PartyServiceTest {
 		partyService.leaveMember(party.getId(), UserDTO.fromEntity(joinUser));
 
 		//then
+		var partyUserOptional = partyUserRepository.findByPartyIdAndUserId(party.getId(), joinUser.getId());
+		assertTrue(partyUserOptional.isEmpty());
 		assertTrue(party.getMembers().stream()
 			.map(partyUser -> partyUser.getUser().getId())
 			.noneMatch(userId -> userId.equals(joinUser.getId())));
+
 	}
 
 	@Test

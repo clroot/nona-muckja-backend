@@ -134,7 +134,7 @@ class PartyControllerTest {
 			.build();
 
 		//when & then
-		mockMvc.perform(post(url)
+		var result = mockMvc.perform(post(url)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(new ObjectMapper().writeValueAsString(registerFormDTO)))
 			.andExpect(status().isCreated())
@@ -148,7 +148,10 @@ class PartyControllerTest {
 			.andExpect(jsonPath("$.currentMemberCount").value(1L))
 			.andExpect(jsonPath("$.status").value(PartyStatus.OPEN.name()))
 			.andExpect(jsonPath("$.members").isArray())
-			.andExpect(jsonPath("$.foodCategory").value(FoodCategory.ASIAN_FOOD.name()));
+			.andExpect(jsonPath("$.foodCategory").value(FoodCategory.ASIAN_FOOD.name()))
+			.andReturn().getResponse().getContentAsString();
+
+		System.out.println(result);
 	}
 
 	@Test
