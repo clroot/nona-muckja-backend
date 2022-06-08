@@ -2,8 +2,6 @@ package io.nonamuckja.backend.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.stream.IntStream;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +9,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import io.nonamuckja.backend.TestUtils;
-import io.nonamuckja.backend.domain.Address;
-import io.nonamuckja.backend.domain.Coordinate;
 import io.nonamuckja.backend.domain.party.FoodCategory;
 import io.nonamuckja.backend.domain.party.Party;
 import io.nonamuckja.backend.domain.party.PartyRepository;
@@ -24,6 +20,7 @@ import io.nonamuckja.backend.web.dto.PartyUpdateRequestDTO;
 import io.nonamuckja.backend.web.dto.UserDTO;
 
 @SpringBootTest
+@Transactional
 class PartyServiceTest {
 
 	@Autowired
@@ -36,7 +33,6 @@ class PartyServiceTest {
 	private TestUtils testUtils;
 
 	@Test
-	@Transactional
 	@DisplayName("파티 생성 테스트")
 	public void testCreateParty() {
 		//given
@@ -71,7 +67,6 @@ class PartyServiceTest {
 	}
 
 	@Test
-	@Transactional
 	@DisplayName("파티 참여 성공 테스트")
 	public void testPartyJoin() {
 		//given
@@ -89,7 +84,6 @@ class PartyServiceTest {
 	}
 
 	@Test
-	@Transactional
 	@DisplayName("파티 참여 실패 테스트")
 	public void testPartyJoinFail() {
 		//given
@@ -109,7 +103,6 @@ class PartyServiceTest {
 	}
 
 	@Test
-	@Transactional
 	@DisplayName("파티 탈퇴 성공 테스트")
 	public void testLeaveMember() {
 		//given
@@ -129,7 +122,6 @@ class PartyServiceTest {
 	}
 
 	@Test
-	@Transactional
 	@DisplayName("파티 탈퇴 실패 테스트")
 	public void testLeaveMemberFail() {
 		//given
@@ -143,7 +135,6 @@ class PartyServiceTest {
 	}
 
 	@Test
-	@Transactional
 	@DisplayName("파티 배달 시작 테스트")
 	public void testStartDelivery() {
 		//given
@@ -165,7 +156,6 @@ class PartyServiceTest {
 	}
 
 	@Test
-	@Transactional
 	@DisplayName("파티 배달 완료 테스트")
 	public void testFinishDelivery() {
 		//given
@@ -190,7 +180,6 @@ class PartyServiceTest {
 	}
 
 	@Test
-	@Transactional
 	@DisplayName("파티 종료 테스트")
 	public void testFinishParty() {
 		//given
@@ -216,7 +205,6 @@ class PartyServiceTest {
 	}
 
 	@Test
-	@Transactional
 	@DisplayName("파티 취소 테스트")
 	public void testCancelParty() {
 		//given
@@ -235,44 +223,5 @@ class PartyServiceTest {
 		assertEquals(PartyStatus.CANCELED, party.getStatus());
 		assertThrows(IllegalStateException.class,
 			() -> partyService.updateParty(partyId, requestDTO, UserDTO.fromEntity(notHostUser)));
-	}
-
-	@Test
-	@Transactional
-	@DisplayName("테스트 데이터 생성")
-	public void test() throws Exception {
-		//given
-		Address address = Address.builder()
-			.address("서울특별시 동작구 상도로 369")
-			.roadAddress("서울특별시 동작구 상도로 369")
-			.coordinate(Coordinate.builder()
-				.latitude(37.49471)
-				.longitude(126.96000)
-				.build())
-			.zipCode("06978")
-			.build();
-		Coordinate center = address.getCoordinate();
-
-		IntStream.range(0, 100).forEach(i -> {
-			User user = testUtils.getRandomUser();
-			Coordinate newCoordinate = center.getVertex(Math.random()).getLeft();
-			Address newAddress = Address.builder()
-				.address("서울특별시 동작구 상도로 369")
-				.roadAddress("서울특별시 동작구 상도로 369")
-				.coordinate(newCoordinate)
-				.zipCode("06978")
-				.build();
-
-			PartyRegisterFormDTO createFormDTO = PartyRegisterFormDTO.builder()
-				.title("테스트 파티" + i)
-				.description("테스트 파티 description" + i)
-				.address(newAddress)
-				.limitMemberCount(10L)
-				.foodCategory(testUtils.getRandomFoodCategory())
-				.partyTime(testUtils.getRandomFutureTime())
-				.build();
-
-			partyService.createParty(createFormDTO, UserDTO.fromEntity(user));
-		});
 	}
 }

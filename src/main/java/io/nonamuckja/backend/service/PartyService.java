@@ -31,7 +31,7 @@ public class PartyService {
 	private final PartyRepository partyRepository;
 
 	public Page<PartyDTO> list(Pageable pageable) {
-		var parties = partyRepository.findAllByOrderByIdDesc(pageable);
+		var parties = partyRepository.findAll(pageable);
 
 		return new PageImpl<>(
 			parties.stream()
