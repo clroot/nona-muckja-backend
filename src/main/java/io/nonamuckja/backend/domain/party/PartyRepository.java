@@ -9,5 +9,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PartyRepository
 	extends JpaRepository<Party, Long>, JpaSpecificationExecutor<Party>, CustomPartyRepository {
-	Page<Party> findAll(Pageable pageable);
+	Page<Party> findAllByOrderByIdDesc(Pageable pageable);
+
 }
