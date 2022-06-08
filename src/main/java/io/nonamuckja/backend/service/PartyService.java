@@ -6,7 +6,9 @@ import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,7 +33,11 @@ public class PartyService {
 	private final PartyRepository partyRepository;
 
 	public Page<PartyDTO> list(Pageable pageable) {
-		var parties = partyRepository.findAll(pageable);
+		Pageable pageableWithSort = PageRequest.of(
+			pageable.getPageNumber(),
+			pageable.getPageSize(),
+			Sort.by(Sort.Direction.DESC, "id"));
+		var parties = partyRepository.findAll(pageableWithSort);
 
 		return new PageImpl<>(
 			parties.stream()
